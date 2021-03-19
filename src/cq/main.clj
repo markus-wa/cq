@@ -1,23 +1,20 @@
 (ns cq.main
-  (:require [clojure.data.json :as json]
-            [clojure.tools.cli :as cli]
-            [clojure.string :as str])
+  (:require [clojure.tools.cli :as cli]
+            [clojure.string :as str]
+            [cq.core :as cq]
+            [cq.formats :as fmt])
   (:gen-class))
 
-(defn query
-  [x exps]
-  (eval (concat `(->> ~x) exps)))
-
-(defn run
-  [in out exps]
-  (-> in
-      (json/read :key-fn keyword)
-      (query exps)
-      (json/write out))
-  (println))
-
 (def cli-options
-  [["-h" "--help"]])
+  [["-i" "--in FORMAT" "Input format"
+    :default "json"]
+   ["-o" "--out FORMAT" "Output format"
+    :default "json"]
+   ["-p" "--[no-]pretty" "Pretty print output"
+    :default true]
+   ["-k" "--key-fn" "Function used to transform keys"
+    :default "keyword"]
+   ["-h" "--help"]])
 
 (defn usage [options-summary]
   (->> ["cq is a command-line data processor for JSON and other data formats."
@@ -47,7 +44,8 @@
       errors ; errors => exit with description of errors
       {:exit-message (error-msg errors)}
       :else ; failed custom validation => exit with usage summary
-      cfg)))
+      (-> cfg
+          (update-in [:options :key-fn] #(-> % symbol resolve))))))
 
 (defn exit
   [status msg]
@@ -62,9 +60,12 @@
 
 (defn -main
   [& args]
-  (let [{:keys [arguments exit-message ok?]}
+  (let [{:keys [arguments exit-message ok?]
+         {:keys [in out] :as opts} :options}
         (validate-args args)
-        expressions (args->exprs arguments)]
+        expressions (args->exprs arguments)
+        reader (fmt/format->reader in *in* opts)
+        writer (fmt/format->writer out *out* opts)]
     (if exit-message
       (exit (if ok? 0 1) exit-message)
-      (run *in* *out* expressions))))
+      (cq/run reader writer expressions))))

@@ -5,3 +5,5 @@ clj -M -e "(compile 'cq.main)"
 
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 clojure -M -m uberdeps.uberjar --deps-file ../deps.edn --target ../target/cq.jar --main-class cq.main
+
+clojure -M -m clj-bin.main --jar ../target/cq.jar --out ../target/cq

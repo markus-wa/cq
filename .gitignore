@@ -3,3 +3,4 @@
 .lsp/
 classes/
 target/
+.clj-kondo/

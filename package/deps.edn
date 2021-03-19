@@ -1,0 +1,4 @@
+{:deps
+ {uberdeps/uberdeps {:mvn/version "1.0.4"}
+  markus-wa/clj-bin
+  {:git/url "https://github.com/markus-wa/clj-bin" :sha "009621b41f33026353e8bed51ec3a587cd94086f"}}}

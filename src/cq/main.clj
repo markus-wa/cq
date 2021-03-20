@@ -55,11 +55,12 @@
 (defn- args->exprs
   [args]
   (->> args
-       (map #(format "[%s]" %))
-       (mapcat read-string)))
+       (str/join " ") ;; make it a single list of expressions
+       (format "[%s]")
+       read-string))
 
-(defn -main
-  [& args]
+(defn main
+  [args]
   (let [{:keys [arguments exit-message ok?]
          {:keys [in out] :as opts} :options}
         (validate-args args)
@@ -69,3 +70,14 @@
     (if exit-message
       (exit (if ok? 0 1) exit-message)
       (cq/run reader writer expressions))))
+
+(defn -main
+  [& args]
+  (try
+    (main args)
+    (catch Exception e
+      (println e))))
+
+(comment
+  (cq/query {:a 1}
+            (args->exprs ["#| ."])))

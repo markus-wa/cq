@@ -16,10 +16,10 @@
   [{:keys [pretty]}]
   (if pretty
     (fn [x out]
-      (binding [*out* (java.io.PrintWriter. out)]
+      (binding [*out* (io/writer out)]
         (json/pprint x)))
     (fn [x out]
-      (binding [*out* (java.io.PrintWriter. out)]
+      (binding [*out* (io/writer out)]
         (json/write x *out*)
         (println)))))
 
@@ -31,9 +31,9 @@
   [{:keys [pretty]}]
   (if pretty
     (fn [x out]
-      (ppt/pprint x (java.io.PrintWriter. out)))
+      (ppt/pprint x (io/writer out)))
     (fn [x out]
-      (binding [*out* (java.io.PrintWriter. out)]
+      (binding [*out* (io/writer out)]
         (pr x)
         (println)))))
 

@@ -1,12 +1,17 @@
-(ns cq.core)
+(ns cq.core
+  (:require [sci.core :as sci]))
 
 (declare ^:dynamic .)
+
+(defn- eval-form
+  [form]
+  (sci/eval-form (sci/init {}) form))
 
 (defn with-dot
   [x form]
   (binding [. x
             *ns* (the-ns 'cq.core)]
-    (eval form)))
+    (eval-form form)))
 
 (defn |*
   [form]
@@ -17,7 +22,7 @@
 
 (defn- thread-last
   [x exps]
-  (eval (concat `(->> ~x) exps)))
+  (eval-form (concat `(->> ~x) exps)))
 
 (defn query
   [data exps]

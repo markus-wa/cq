@@ -5,7 +5,8 @@
   org.clojure/tools.cli {:mvn/version "1.0.206"}
   org.clojure/tools.reader {:mvn/version "1.3.4"}
   clojure-msgpack/clojure-msgpack {:mvn/version "1.2.1"}
-  borkdude/sci {:mvn/version "0.2.4"}}
+  borkdude/sci {:mvn/version "0.2.4"}
+  com.rpl/specter {:mvn/version "1.1.3"}}
  :aliases
  {:run
   {:main-opts ["-m" "cq.main"]}}}

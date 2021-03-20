@@ -46,13 +46,28 @@
   (fn [data out]
     (mp/pack-stream data out)))
 
+(defn ->line-reader
+  [_]
+  line-seq)
+
+(defn ->line-writer
+  [_]
+  (fn [data out]
+    (binding [*out* (io/writer out)]
+      (if (seqable? data)
+        (doseq [line (seq data)]
+          (println line))
+        (println data)))))
+
 (def formats
   {"json"    {:->reader ->json-reader
               :->writer ->json-writer}
    "edn"     {:->reader ->edn-reader
               :->writer ->edn-writer}
    "msgpack" {:->reader ->msgpack-reader
-              :->writer ->msgpack-writer}})
+              :->writer ->msgpack-writer}
+   "lines"   {:->reader ->line-reader
+              :->writer ->line-writer}})
 
 (defn format->reader
   [format in opts]

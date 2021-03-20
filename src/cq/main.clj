@@ -6,12 +6,12 @@
   (:gen-class))
 
 (def cli-options
-  [["-i" "--in FORMAT" "Input format: edn, json, msgpack"
+  [["-i" "--in FORMAT" "Input format: edn, json, msgpack, lines"
     :default "json"
-    :validate [#{"edn" "json" "msgpack"}]]
-   ["-o" "--out FORMAT" "Output format: edn, json, msgpack"
+    :validate [#{"edn" "json" "msgpack" "lines"}]]
+   ["-o" "--out FORMAT" "Output format: edn, json, msgpack, lines"
     :default "edn"
-    :validate [#{"edn" "json" "msgpack"}]]
+    :validate [#{"edn" "json" "msgpack" "lines"}]]
    ["-p" "--[no-]pretty" "Pretty print output - default is true"
     :default true]
    ["-k" "--key-fn" "Function used to transform keys"

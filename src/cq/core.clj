@@ -1,20 +1,28 @@
 (ns cq.core
-  (:require [sci.core :as sci]))
+  (:require [sci.core :as sci]
+            [com.rpl.specter :as spc]))
 
-(defn- eval-form
+(def bindings
+  {'select spc/select*
+   'ALL spc/ALL})
+
+(defn- my-eval
   [opts form]
-  (sci/eval-form (sci/init opts) form))
+  (let [ctx (-> opts
+                (update :bindings #(merge % bindings))
+                sci/init)]
+    (sci/eval-form ctx form)))
 
 (defn |*
   [form]
   `((fn [x#]
-      (~'eval-f {:bindings {'. x#}}
+      (~'my-eval {:bindings {'. x#}}
                 '~form))))
 
 (defn- thread-last
   [x exps]
-  (eval-form {:bindings {'eval-f eval-form}}
-             (concat `(->> ~x) exps)))
+  (my-eval {:bindings {'my-eval my-eval}}
+           (concat `(->> ~x) exps)))
 
 (defn query
   [data exps]

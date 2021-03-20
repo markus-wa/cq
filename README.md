@@ -42,6 +42,10 @@ $ curl -s 'https://api.github.com/repos/stedolan/jq/commits?per_page=5' | \
 
 ... much more to come!
 
+## TODO
+
+- complete [specter](https://github.com/redplanetlabs/specter) support
+
 ## Acknowledgements
 
 This project takes a lot of inspiration from [`jq`](https://stedolan.github.io/jq/), [`jet`](https://github.com/borkdude/jet) and [`babashka`](https://github.com/babashka/babashka)

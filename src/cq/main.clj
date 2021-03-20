@@ -6,18 +6,20 @@
   (:gen-class))
 
 (def cli-options
-  [["-i" "--in FORMAT" "Input format"
-    :default "json"]
-   ["-o" "--out FORMAT" "Output format"
-    :default "edn"]
-   ["-p" "--[no-]pretty" "Pretty print output"
+  [["-i" "--in FORMAT" "Input format: edn, json, msgpack"
+    :default "json"
+    :validate [#{"edn" "json" "msgpack"}]]
+   ["-o" "--out FORMAT" "Output format: edn, json, msgpack"
+    :default "edn"
+    :validate [#{"edn" "json" "msgpack"}]]
+   ["-p" "--[no-]pretty" "Pretty print output - default is true"
     :default true]
    ["-k" "--key-fn" "Function used to transform keys"
     :default "keyword"]
    ["-h" "--help"]])
 
 (defn usage [options-summary]
-  (->> ["cq is a command-line data processor for JSON and other data formats."
+  (->> ["cq is a Clojure command-line data processor for JSON, EDN and other data formats."
         ""
         "Usage: cq [options] QUERY"
         ""
@@ -63,13 +65,13 @@
   [args]
   (let [{:keys [arguments exit-message ok?]
          {:keys [in out] :as opts} :options}
-        (validate-args args)
-        expressions (args->exprs arguments)
-        reader (fmt/format->reader in *in* opts)
-        writer (fmt/format->writer out *out* opts)]
+        (validate-args args)]
     (if exit-message
       (exit (if ok? 0 1) exit-message)
-      (cq/run reader writer expressions))))
+      (let [expressions (args->exprs arguments)
+            reader (fmt/format->reader in *in* opts)
+            writer (fmt/format->writer out System/out opts)]
+        (cq/run reader writer expressions)))))
 
 (defn -main
   [& args]

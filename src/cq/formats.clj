@@ -1,7 +1,10 @@
 (ns cq.formats
   (:require [clojure.data.json :as json]
             [clojure.edn :as edn]
-            [clojure.pprint :as ppt]))
+            [clojure.pprint :as ppt]
+            [clojure.java.io :as io]
+            [msgpack.core :as mp]
+            [msgpack.clojure-extensions]))
 
 (defn ->json-reader
   [{:keys [key-fn]
@@ -13,11 +16,11 @@
   [{:keys [pretty]}]
   (if pretty
     (fn [x out]
-      (binding [*out* out]
+      (binding [*out* (java.io.PrintWriter. out)]
         (json/pprint x)))
     (fn [x out]
-      (binding [*out* out]
-        (json/write x out)
+      (binding [*out* (java.io.PrintWriter. out)]
+        (json/write x *out*)
         (println)))))
 
 (defn ->edn-reader
@@ -28,16 +31,28 @@
   [{:keys [pretty]}]
   (if pretty
     (fn [x out]
-      (ppt/pprint x out))
+      (ppt/pprint x (java.io.PrintWriter. out)))
     (fn [x out]
-      (binding [*out* out]
-        (pr x)))))
+      (binding [*out* (java.io.PrintWriter. out)]
+        (pr x)
+        (println)))))
+
+(defn ->msgpack-reader
+  [_]
+  mp/unpack)
+
+(defn ->msgpack-writer
+  [_]
+  (fn [data out]
+    (mp/pack-stream data out)))
 
 (def formats
-  {"json" {:->reader ->json-reader
-           :->writer ->json-writer}
-   "edn"  {:->reader ->edn-reader
-           :->writer ->edn-writer}})
+  {"json"    {:->reader ->json-reader
+              :->writer ->json-writer}
+   "edn"     {:->reader ->edn-reader
+              :->writer ->edn-writer}
+   "msgpack" {:->reader ->msgpack-reader
+              :->writer ->msgpack-writer}})
 
 (defn format->reader
   [format in opts]

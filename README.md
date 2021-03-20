@@ -6,10 +6,26 @@ Like Clojure's [threading macros](https://clojure.org/guides/threading_macros), 
 
 ## Usage
 
+```
+$ cq --help
+cq is a Clojure command-line data processor for JSON, EDN and other data formats.
+
+Usage: cq [options] QUERY
+
+Options:
+  -i, --in FORMAT    json  Input format: edn, json, msgpack
+  -o, --out FORMAT   edn   Output format: edn, json, msgpack
+  -p, --[no-]pretty        Pretty print output - default is true
+  -k, --key-fn             Function used to transform keys
+  -h, --help
+
+See https://github.com/markus-wa/cq for more information.
+```
+
 By default `cq` uses [thread last (`->>`)](https://clojure.org/guides/threading_macros#thread-last) semantics.
 
 ```
-$ echo '{"a": {"b": [1, 2, 3]}}' | cq ':a :b (map inc)'
+$ echo '{"a": {"b": [1, 2, 3]}}' | cq --out json ':a :b (map inc)'
 [2, 3, 4]
 ```
 

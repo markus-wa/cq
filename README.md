@@ -14,3 +14,7 @@ $ echo '{"a": {"b": [1, 2, 3]}}' | cq ':a :b (map inc)'
 ```
 
 ... much more to come!
+
+## Acknowledgements
+
+This project takes a lot of inspiration from [`jq`](https://stedolan.github.io/jq/), [`jet`](https://github.com/borkdude/jet) and [`babashka`](https://github.com/babashka/babashka)

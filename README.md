@@ -25,8 +25,8 @@ See https://github.com/markus-wa/cq for more information.
 By default `cq` uses [thread last (`->>`)](https://clojure.org/guides/threading_macros#thread-last) semantics.
 
 ```bash
-$ echo '{"a": {"b": [1, 2, 3]}}' | cq --out json ':a :b (map inc)'
-[2, 3, 4]
+$ echo '{"a": {"b": [1, 2, 3]}}' | cq ':a :b (map inc)'
+(2 3 4)
 ```
 
 Using `#|` you can use the current value as `.`.

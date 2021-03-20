@@ -13,6 +13,16 @@ $ echo '{"a": {"b": [1, 2, 3]}}' | cq ':a :b (map inc)'
 [2,3,4]
 ```
 
+Using `#|` you can use the current value as `.`.
+
+```
+$ curl -s 'https://api.github.com/repos/stedolan/jq/commits?per_page=5' | cq --out edn 'first #| {:message (-> . :commit :message) :name (-> . :commit :committer :name) :parents (->> . :parents (map :html_url))}'
+{:message "Fix #2197 extended regex pattern example",
+ :name "William Langford",
+ :parents
+ ("https://github.com/stedolan/jq/commit/a17dd3248a666d01be75f6b16be37e80e20b0954")}
+```
+
 ... much more to come!
 
 ## Acknowledgements

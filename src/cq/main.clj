@@ -9,7 +9,7 @@
   [["-i" "--in FORMAT" "Input format"
     :default "json"]
    ["-o" "--out FORMAT" "Output format"
-    :default "json"]
+    :default "edn"]
    ["-p" "--[no-]pretty" "Pretty print output"
     :default true]
    ["-k" "--key-fn" "Function used to transform keys"

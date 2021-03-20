@@ -10,14 +10,14 @@ By default `cq` uses [thread last (`->>`)](https://clojure.org/guides/threading_
 
 ```
 $ echo '{"a": {"b": [1, 2, 3]}}' | cq ':a :b (map inc)'
-[2,3,4]
+[2, 3, 4]
 ```
 
 Using `#|` you can use the current value as `.`.
 
 ```
 $ curl -s 'https://api.github.com/repos/stedolan/jq/commits?per_page=5' | \
-  cq --out edn 'first #| {:message (-> . :commit :message) :committer (-> . :commit :committer :name) :parents (->> . :parents (map :html_url))}'
+  cq 'first #| {:message (-> . :commit :message) :committer (-> . :commit :committer :name) :parents (->> . :parents (map :html_url))}'
 {:message "Fix #2197 extended regex pattern example",
  :committer "William Langford",
  :parents

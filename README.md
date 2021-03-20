@@ -1,6 +1,6 @@
 # cq (Clojure Query)
 
-Command-line Data Processor for JSON (and soon more data formats).
+Command-line Data Processor for JSON, EDN and other data formats.
 
 Like Clojure's [threading macros](https://clojure.org/guides/threading_macros), but on the command line!
 

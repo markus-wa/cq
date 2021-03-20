@@ -22,7 +22,7 @@
 (defn- thread-last
   [x exps]
   (my-eval {:bindings {'my-eval my-eval}}
-           (concat `(->> ~x) exps)))
+           (concat `(->> '~x) exps)))
 
 (defn query
   [data exps]

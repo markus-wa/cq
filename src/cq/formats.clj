@@ -48,7 +48,8 @@
 
 (defn ->line-reader
   [_]
-  line-seq)
+  (fn [in]
+    (line-seq (java.io.BufferedReader. in))))
 
 (defn ->line-writer
   [_]

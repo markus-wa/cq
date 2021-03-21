@@ -4,6 +4,13 @@ Command-line Data Processor for JSON, EDN and other data formats.
 
 Like Clojure's [threading macros](https://clojure.org/guides/threading_macros), but on the command line!
 
+## Features
+
+- Comes with [Specter](https://github.com/redplanetlabs/specter) for transforming nested data structures
+- Various reader macros that make writing queries easier
+- Supports all elements of Clojure supported by [SCI](https://github.com/borkdude/sci)
+- Fast startup thanks to GraalVM native-images
+
 ## Usage
 
 ```

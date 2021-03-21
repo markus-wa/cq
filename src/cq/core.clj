@@ -1,28 +1,47 @@
 (ns cq.core
   (:require [sci.core :as sci]
-            [com.rpl.specter :as spc]))
+            [clojure.walk :refer [postwalk]]))
 
-(def bindings
-  {'select spc/select*
-   'ALL spc/ALL})
+;; set up sci bindings for specter
+(require 'com.rpl.specter)
+
+(def specter-bindings
+  (let [specter-publics (ns-publics (the-ns 'com.rpl.specter))
+        ->bindings
+        (fn [acc [k v]]
+          (let [k* (symbol (format "%s*" k))
+                v (or (specter-publics k*) v)]
+            (assoc acc k (var-get v))))]
+    (reduce ->bindings {} specter-publics)))
+
+(def bindings specter-bindings)
 
 (defn- my-eval
   [opts form]
   (let [ctx (-> opts
-                (update :bindings #(merge % bindings))
+                (update :bindings #(merge % bindings {'my-eval my-eval}))
                 sci/init)]
     (sci/eval-form ctx form)))
 
+(defn dotfn
+  [form]
+  ;; Clojure doesn't like . as var name
+  (let [replace-dot #(if (= % '.) 'dot %)
+        form (postwalk replace-dot form)]
+    `(fn [~'dot]
+       ~form)))
+
 (defn |*
   [form]
-  `((fn [x#]
-      (~'my-eval {:bindings {'. x#}}
-                '~form))))
+  `(~(dotfn form)))
+
+(defn map*
+  [form]
+  `(map ~(dotfn form)))
 
 (defn- thread-last
   [x exps]
-  (my-eval {:bindings {'my-eval my-eval}}
-           (concat `(->> '~x) exps)))
+  (my-eval nil (concat `(->> '~x) exps)))
 
 (defn query
   [data exps]

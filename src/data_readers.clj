@@ -1,1 +1,2 @@
-{| cq.core/|*}
+{|   cq.core/|*
+ map cq.core/map*}

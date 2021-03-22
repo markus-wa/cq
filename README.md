@@ -63,8 +63,8 @@ $ curl -s 'https://api.github.com/repos/stedolan/jq/commits?per_page=5' | \
 
 | Reader Macro | Description | Interpolates to | Example |
 | ------------ | ----------- | --------------- | ------- |
-| `#| <form>`  | Let's you use the current value as variable `.` | `((fn [.] <form>))` | `#| (< 5 . 10)` |
-| `#map <form>` | Map elements of a seq | `(map (fn [.] <form>))` | `#map {:a (:a .) :first-child (-> . :children first)} |
+| `#\| <form>`  | Let's you use the current value as variable `.` | `((fn [.] <form>))` | `#\| (< 5 . 10)` |
+| `#map <form>` | Map elements of a seq | `(map (fn [.] <form>))` | `#map {:a (:a .) :first-child (-> . :children first)}` |
 
 ## TODO
 

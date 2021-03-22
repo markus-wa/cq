@@ -18,10 +18,8 @@
 
 (defn- my-eval
   [opts form]
-  (let [ctx (-> opts
-                (update :bindings #(merge % bindings {'my-eval my-eval}))
-                sci/init)]
-    (sci/eval-form ctx form)))
+  (let [opts (update opts :bindings #(merge % bindings {'my-eval my-eval}))]
+    (sci/eval-form (sci/init opts) form)))
 
 (defn dotfn
   [form]

@@ -61,10 +61,13 @@ $ curl -s 'https://api.github.com/repos/stedolan/jq/commits?per_page=5' | \
 
 ### Reader Macros
 
+This table explains the different reader macros provided by `cq`.
+`<f>` is the form passed in after the reader macro.
+
 | Reader Macro | Description | Interpolates to | Example |
 | ------------ | ----------- | --------------- | ------- |
-| `#\| <form>`  | Let's you use the current value as variable `.` | `((fn [.] <form>))` | `#\| (< 5 . 10)` |
-| `#map <form>` | Map elements of a seq | `(map (fn [.] <form>))` | `#map {:a (:a .) :first-child (-> . :children first)}` |
+| `#\| <f>`  | Use the current value as `.` | `((fn [.] <f>))` | `#\| (< 5 . 10)` |
+| `#map <f>` | Map elements of a seq | `(map (fn [.] <f>))` | `#map {:a (:a .) :first-child (-> . :children first)}` |
 
 ## TODO
 

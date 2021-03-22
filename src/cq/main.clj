@@ -5,13 +5,22 @@
             [cq.formats :as fmt])
   (:gen-class))
 
+(def formats
+  #{"edn"
+    "json"
+    "msgpack"
+    "lines"
+    "text"})
+
+(def formats-str (str/join ", " (sort formats)))
+
 (def cli-options
-  [["-i" "--in FORMAT" "Input format: edn, json, msgpack, lines"
+  [["-i" "--in FORMAT" (str "Input format: " formats-str)
     :default "json"
-    :validate [#{"edn" "json" "msgpack" "lines"}]]
-   ["-o" "--out FORMAT" "Output format: edn, json, msgpack, lines"
+    :validate [formats]]
+   ["-o" "--out FORMAT" (str "Output format: " formats-str)
     :default "edn"
-    :validate [#{"edn" "json" "msgpack" "lines"}]]
+    :validate [formats]]
    ["-p" "--[no-]pretty" "Pretty print output - default is true"
     :default true]
    ["-k" "--key-fn" "Function used to transform keys"

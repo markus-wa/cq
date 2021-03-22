@@ -30,8 +30,8 @@ cq is a Clojure command-line data processor for JSON, EDN and other data formats
 Usage: cq [options] QUERY
 
 Options:
-  -i, --in FORMAT    json  Input format: edn, json, msgpack, lines
-  -o, --out FORMAT   edn   Output format: edn, json, msgpack, lines
+  -i, --in FORMAT    json  Input format: edn, json, lines, msgpack, text
+  -o, --out FORMAT   edn   Output format: edn, json, lines, msgpack, text
   -p, --[no-]pretty        Pretty print output - default is true
   -k, --key-fn             Function used to transform keys
   -h, --help

@@ -4,12 +4,22 @@ Command-line Data Processor for JSON, EDN and other data formats.
 
 Like Clojure's [threading macros](https://clojure.org/guides/threading_macros), but on the command line!
 
+## Rationale
+
+While there are a few similar tools out there, such as jq, jet and babashka, these all have one or more reasons making them less suitable for command-line data processing.
+
+cq aims to:
+
+- Not require learning yet another query language - it's just ~~data~~ Clojure!
+- Give the user complete power for writing queries, with as few limitations as possible
+- Provide various input and output formats out of the box
+
 ## Features
 
 - Comes with [Specter](https://github.com/redplanetlabs/specter) for transforming nested data structures
-- Various reader macros that make writing queries easier
+- Various [reader macros](#reader-macros) that make writing queries easier
 - Supports all elements of Clojure supported by [SCI](https://github.com/borkdude/sci)
-- Fast startup thanks to GraalVM native-images
+- No startup lag thanks to GraalVM native-images
 
 ## Usage
 
@@ -48,6 +58,13 @@ $ curl -s 'https://api.github.com/repos/stedolan/jq/commits?per_page=5' | \
 ```
 
 ... much more to come!
+
+### Reader Macros
+
+| Reader Macro | Description | Interpolates to | Example |
+| ------------ | ----------- | --------------- | ------- |
+| `#| <form>`  | Let's you use the current value as variable `.` | `((fn [.] <form>))` | `#| (< 5 . 10)` |
+| `#map <form>` | Map elements of a seq | `(map (fn [.] <form>))` | `#map {:a (:a .) :first-child (-> . :children first)} |
 
 ## TODO
 

@@ -69,7 +69,7 @@
     (if exit-message
       (exit (if ok? 0 1) exit-message)
       (let [expressions (args->exprs arguments)
-            reader (fmt/format->reader in *in* opts)
+            reader (fmt/format->reader in System/in opts)
             writer (fmt/format->writer out System/out opts)]
         (cq/run reader writer expressions)))))
 

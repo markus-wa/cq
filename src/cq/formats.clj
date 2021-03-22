@@ -4,13 +4,14 @@
             [clojure.pprint :as ppt]
             [clojure.java.io :as io]
             [msgpack.core :as mp]
-            [msgpack.clojure-extensions]))
+            [msgpack.clojure-extensions])
+  (:import [java.io PushbackReader]))
 
 (defn ->json-reader
   [{:keys [key-fn]
     :or   {key-fn keyword}}]
-  (fn [x]
-    (json/read x :key-fn key-fn)))
+  (fn [in]
+    (json/read (io/reader in) :key-fn key-fn)))
 
 (defn ->json-writer
   [{:keys [pretty]}]
@@ -25,7 +26,8 @@
 
 (defn ->edn-reader
   [_]
-  edn/read)
+  (fn [in]
+    (edn/read (PushbackReader. (io/reader in)))))
 
 (defn ->edn-writer
   [{:keys [pretty]}]
@@ -44,12 +46,14 @@
 (defn ->msgpack-writer
   [_]
   (fn [data out]
-    (mp/pack-stream data out)))
+    (mp/pack-stream data out)
+    (binding [*out* (io/writer out)]
+      (flush))))
 
 (defn ->line-reader
   [_]
   (fn [in]
-    (line-seq (java.io.BufferedReader. in))))
+    (line-seq (io/reader in))))
 
 (defn ->line-writer
   [_]
@@ -60,6 +64,17 @@
           (println line))
         (println data)))))
 
+(defn ->text-reader
+  [_]
+  (fn [in]
+    (slurp in)))
+
+(defn ->text-writer
+  [_]
+  (fn [data out]
+    (binding [*out* (io/writer out)]
+      (println data))))
+
 (def formats
   {"json"    {:->reader ->json-reader
               :->writer ->json-writer}
@@ -68,7 +83,9 @@
    "msgpack" {:->reader ->msgpack-reader
               :->writer ->msgpack-writer}
    "lines"   {:->reader ->line-reader
-              :->writer ->line-writer}})
+              :->writer ->line-writer}
+   "text"    {:->reader ->text-reader
+              :->writer ->text-writer}})
 
 (defn format->reader
   [format in opts]

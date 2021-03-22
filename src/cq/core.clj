@@ -26,9 +26,10 @@
 (defn dotfn
   [form]
   ;; Clojure doesn't like . as var name
-  (let [replace-dot #(if (= % '.) 'dot %)
+  (let [dot `dot#
+        replace-dot #(if (= % '.) dot %)
         form (postwalk replace-dot form)]
-    `(fn [~'dot]
+    `(fn [~dot]
        ~form)))
 
 (defn |*

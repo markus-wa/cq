@@ -1,6 +1,5 @@
 (ns cq.core
-  (:require [sci.core :as sci]
-            [clojure.walk :refer [postwalk]]))
+  (:require [sci.core :as sci]))
 
 ;; set up sci bindings for specter
 (require 'com.rpl.specter)
@@ -19,32 +18,38 @@
 (defn- my-eval
   [opts form]
   (let [opts (update opts :bindings #(merge % bindings {'my-eval my-eval}))]
-    (sci/eval-form (sci/init opts) form)))
+    (sci/eval-form (sci/init opts)
+                   `(do
+                      (~'require '[clojure.string :as ~'str])
+                      ~form))))
 
-(defn dotfn
-  [form]
-  ;; Clojure doesn't like . as var name
-  (let [dot `dot#
-        replace-dot #(if (= % '.) dot %)
-        form (postwalk replace-dot form)]
-    `(fn [~dot]
-       ~form)))
+(defn- ->*
+  [x exps]
+  (my-eval nil (concat `(-> '~x) exps)))
 
-(defn |*
-  [form]
-  `(~(dotfn form)))
-
-(defn map*
-  [form]
-  `(map ~(dotfn form)))
-
-(defn- thread-last
+(defn- ->>*
   [x exps]
   (my-eval nil (concat `(->> '~x) exps)))
 
+(defn- query*
+  [data [[e1] :as exps]]
+  (if (seq exps)
+    (cond
+      (= e1 '->)
+      (query* (->* data (second exps)) (drop 2 exps))
+      (= e1 '->>)
+      (query* (->>* data (second exps)) (drop 2 exps))
+      :else
+      (query* (->>* data (first exps)) (rest exps)))
+    data))
+
+(def special?
+  #{'->
+    '->>})
+
 (defn query
   [data exps]
-  (thread-last data exps))
+  (query* data (partition-by special? exps)))
 
 (defn run
   [read! write! exps]

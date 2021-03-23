@@ -18,6 +18,7 @@ cq aims to:
 
 - Comes with [Specter](https://github.com/redplanetlabs/specter) for transforming nested data structures
 - Various [reader macros](#reader-macros) that make writing queries easier
+- [Threading Redirection](#threading-redirection) reduces need for parentheses
 - Supports all elements of Clojure supported by [SCI](https://github.com/borkdude/sci)
 - No startup lag thanks to GraalVM native-images
 
@@ -56,6 +57,25 @@ $ curl -s 'https://api.github.com/repos/stedolan/jq/commits?per_page=5' | \
  :parents
  ("https://github.com/stedolan/jq/commit/a17dd3248a666d01be75f6b16be37e80e20b0954")}
 ```
+
+### Threading Redirection
+
+While things like [`->->><?as->cond->!`](https://github.com/randomcorp/thread-first-thread-last-backwards-question-mark-as-arrow-cond-arrow-bang) are pretty funny,
+it can be pretty convenient to just redirect a threading macro when you're working on a simple terminal without paredit.
+
+All threading operators will change the query after that point to their implementation until followed by any other threading operator (no need for parentheses).
+
+Note that threading redirection is currently only supported on the top level, not in nested threading macros.
+
+```bash
+$ printf "http://example.com/some/path" | clj -Mrun -i text -- '-> str/upper-case (str/split #"/") ->> (map str/reverse)'
+(":PTTH" "" "MOC.ELPMAXE" "EMOS" "HTAP")
+```
+
+Currently supported threading operators for redirection:
+
+- `->` thread first
+- `->>` thread last
 
 ... much more to come!
 

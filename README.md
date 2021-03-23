@@ -68,7 +68,8 @@ All threading operators will change the query after that point to their implemen
 Note that threading redirection is currently only supported on the top level, not in nested threading macros.
 
 ```bash
-$ printf "http://example.com/some/path" | cq -i text -- '-> str/upper-case (str/split #"/") ->> (map str/reverse)'
+$ printf "http://example.com/some/path" | \
+  cq -i text -- '-> str/upper-case (str/split #"/") ->> (map str/reverse)'
 (":PTTH" "" "MOC.ELPMAXE" "EMOS" "HTAP")
 ```
 

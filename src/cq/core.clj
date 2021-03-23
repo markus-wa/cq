@@ -16,20 +16,18 @@
 (def bindings specter-bindings)
 
 (defn- my-eval
-  [opts form]
-  (let [opts (update opts :bindings #(merge % bindings {'my-eval my-eval}))]
+  [op data exps]
+  (let [data-var `x#
+        opts {:bindings {'my-eval my-eval
+                         data-var data}}
+        form (concat `(~op ~data-var) exps)]
     (sci/eval-form (sci/init opts)
                    `(do
                       (~'require '[clojure.string :as ~'str])
                       ~form))))
 
-(defn- ->*
-  [x exps]
-  (my-eval nil (concat `(-> '~x) exps)))
-
-(defn- ->>*
-  [x exps]
-  (my-eval nil (concat `(->> '~x) exps)))
+(def ->* (partial my-eval '->))
+(def ->>* (partial my-eval '->>))
 
 (defn- query*
   [data [[e1] :as exps]]

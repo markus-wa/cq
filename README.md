@@ -19,7 +19,7 @@ cq aims to:
 - Comes with [Specter](https://github.com/redplanetlabs/specter) for transforming nested data structures
 - Various [reader macros](#reader-macros) that make writing queries easier
 - [Threading macro redirection](#threading-macro-redirection) reduces need for parentheses
-- Supports all elements of Clojure supported by [SCI](https://github.com/borkdude/sci)
+- Supports all elements of Clojure that are supported by [SCI](https://github.com/borkdude/sci)
 - No startup lag thanks to GraalVM native-images
 
 ## Usage

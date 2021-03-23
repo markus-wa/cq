@@ -5,6 +5,8 @@
             [cq.formats :as fmt])
   (:gen-class))
 
+(require 'cq.readers)
+
 (def formats
   #{"edn"
     "json"

@@ -12,7 +12,8 @@
     "json"
     "msgpack"
     "lines"
-    "text"})
+    "text"
+    "csv"})
 
 (def formats-str (str/join ", " (sort formats)))
 

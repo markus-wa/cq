@@ -74,3 +74,13 @@
 
   (testing "writer"
     (is (= (seq (resource->bytes "test.mp.golden")) (seq (test-writer-bytes sut/->msgpack-writer nil {"a" {"b" [1 2 3]}}))))))
+
+(deftest csv
+  (testing "reader"
+    (is (= [{:a "1" :b "2"} {:a "3" :b "4"}]
+           (test-reader-str sut/->csv-reader nil "a,b\n1,2\n3,4")))
+    (is (= [["1" "2"] ["3" "4"]]
+           (test-reader-str sut/->csv-reader {:csv-no-header true} "1,2\n3,4"))))
+  (testing "writer"
+    (is (= "a,b\n1,2\n3,4\n" (test-writer-str sut/->csv-writer nil [{:a 1, :b 2} {:a 3, :b 4}])))
+    (is (= "1,2\n3,4\n" (test-writer-str sut/->csv-writer nil [[1 2] [3 4]])))))

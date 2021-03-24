@@ -1,5 +1,6 @@
 (ns cq.formats
-  (:require [clojure.data.json :as json]
+  (:require [clojure.data.csv :as csv]
+            [clojure.data.json :as json]
             [clojure.edn :as edn]
             [clojure.pprint :as ppt]
             [clojure.java.io :as io]
@@ -75,6 +76,41 @@
     (binding [*out* (io/writer out)]
       (println data))))
 
+(defn- csv->maps
+  [[headers & data]]
+  (let [headers (map keyword headers)
+        row->map (fn [m k v]
+                   (assoc m (nth headers k) v))]
+    (for [row data]
+      (reduce-kv row->map {} row))))
+
+(defn ->csv-reader
+  [{:keys [csv-no-header]}]
+  (fn [in]
+    (with-open [r (io/reader in)]
+      (let [data (csv/read-csv r)]
+        (doall data)
+        (if csv-no-header
+          data
+          (csv->maps data))))))
+
+(defn- maps->csv
+  [[row1 :as data]]
+  (let [headers (keys row1)]
+    (concat [(map name headers)]
+            (for [row data]
+              (for [h headers]
+                (get row h))))))
+
+(defn ->csv-writer
+  [_]
+  (fn [[row1 :as data] out]
+    (let [data (if (map? row1)
+                 (maps->csv data)
+                 data)]
+      (with-open [w (io/writer out)]
+        (csv/write-csv w data)))))
+
 (def formats
   {"json"    {:->reader ->json-reader
               :->writer ->json-writer}
@@ -85,7 +121,9 @@
    "lines"   {:->reader ->line-reader
               :->writer ->line-writer}
    "text"    {:->reader ->text-reader
-              :->writer ->text-writer}})
+              :->writer ->text-writer}
+   "csv"     {:->reader ->csv-reader
+              :->writer ->csv-writer}})
 
 (defn format->reader
   [format in opts]

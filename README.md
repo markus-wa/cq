@@ -103,6 +103,7 @@ This table explains the different reader macros provided by `cq`.
 
 ... much more to come
 
+- 'thread as' redirect
 - integrate [medley](https://github.com/weavejester/medley)
 - YAML support
 - Transit support

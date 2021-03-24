@@ -89,9 +89,11 @@ This table explains the different reader macros provided by `cq`.
 | ------------ | ----------- | --------------- | ------- |
 | `#\| <f>`  | Use the current value as `.` | `((fn [.] <f>))` | `#\| (< 5 . 10)` |
 | `#map <f>` | Map elements of a seq | `(map (fn [.] <f>))` | `#map {:a (:a .) :first-child (-> . :children first)}` |
+| `#& (<d> <f...>)` | Destructure into vars | `((fn [.] (let [<d> .] <f>)` | `#& ({:keys [a b c]} [a b c]})` |
 
 ## TODO
 
+- integrate [medley](https://github.com/weavejester/medley)
 - CSV support
 - YAML support
 - Transit support

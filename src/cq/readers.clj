@@ -17,3 +17,10 @@
 (defn map*
   [form]
   `(map ~(dotfn form)))
+
+(defn &*
+  [[destruct & forms]]
+  `(+ 1 1)
+  `((fn [data#]
+      (let [~destruct data#]
+        ~@forms))))

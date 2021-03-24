@@ -85,8 +85,8 @@ Currently supported threading operators for redirection:
 
 - `->` thread first
 - `->>` thread last
-
-... much more to come!
+- `some->` thread some
+- `some->>` thread some last
 
 ### Reader Macros
 
@@ -100,6 +100,8 @@ This table explains the different reader macros provided by `cq`.
 | `#& (<d> <f...>)` | Destructure into vars | `((fn [.] (let [<d> .] <f>)` | `#& ({:keys [a b c]} [a b c]})` |
 
 ## TODO
+
+... much more to come
 
 - integrate [medley](https://github.com/weavejester/medley)
 - YAML support

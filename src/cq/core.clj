@@ -28,26 +28,26 @@
 
 (def ->* (partial my-eval '->))
 (def ->>* (partial my-eval '->>))
+(def some->* (partial my-eval 'some->))
+(def some->>* (partial my-eval 'some->>))
+
+(def ->threading-fn
+  {'-> ->*
+   '->> ->>*
+   'some-> some->*
+   'some->> some->>*})
 
 (defn- query*
-  [data [[e1] :as exps]]
+  [data [[e1] next-exp & future-exps :as exps]]
   (if (seq exps)
-    (cond
-      (= e1 '->)
-      (query* (->* data (second exps)) (drop 2 exps))
-      (= e1 '->>)
-      (query* (->>* data (second exps)) (drop 2 exps))
-      :else
-      (query* (->>* data (first exps)) (rest exps)))
+    (if-let [thread-fn (->threading-fn e1)]
+      (query* (thread-fn data next-exp) future-exps)
+      (query* (->>* data e1) (rest exps)))
     data))
-
-(def special?
-  #{'->
-    '->>})
 
 (defn query
   [data exps]
-  (query* data (partition-by special? exps)))
+  (query* data (partition-by ->threading-fn exps)))
 
 (defn run
   [read! write! exps]

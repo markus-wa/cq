@@ -13,6 +13,7 @@ cq aims to:
 - Not require learning yet another query language - it's just ~~data~~ Clojure!
 - Give the user complete power for writing queries, with as few limitations as possible
 - Provide various input and output formats out of the box
+- Be opinionated, ship useful tools/libraries pre-bundled
 
 ## Features
 

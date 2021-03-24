@@ -24,7 +24,7 @@ jobs:
       - name: Install clojure tools
         uses: DeLaGuardo/setup-clojure@3.2
         with:
-          cli: latest
+          cli: 1.10.1.693
 
       - name: Test on Linux & OSX
         if: ${{ matrix.os != 'windows-latest' }}

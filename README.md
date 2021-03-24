@@ -94,7 +94,6 @@ This table explains the different reader macros provided by `cq`.
 ## TODO
 
 - integrate [medley](https://github.com/weavejester/medley)
-- CSV support
 - YAML support
 - Transit support
 - maybe [XML](https://github.com/tolitius/xml-in), [HTML](https://github.com/davidsantiago/hickory) & Parquet support

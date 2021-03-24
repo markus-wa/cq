@@ -58,6 +58,14 @@ $ curl -s 'https://api.github.com/repos/stedolan/jq/commits?per_page=5' | \
  ("https://github.com/stedolan/jq/commit/a17dd3248a666d01be75f6b16be37e80e20b0954")}
 ```
 
+There's also a destructuring macro `#&` to make using `(let)` easier.
+
+```bash
+$ printf "http://example.com/some/path" | \
+  cq -i text -- '-> (str/split #"/") #& ([protocol _ host] {:protocol protocol :host host})'
+{:protocol "http:", :host "example.com"}
+```
+
 ### Threading Macro Redirection
 
 While things like [`->->><?as->cond->!`](https://github.com/randomcorp/thread-first-thread-last-backwards-question-mark-as-arrow-cond-arrow-bang) are pretty funny,

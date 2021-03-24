@@ -20,7 +20,6 @@
 
 (defn &*
   [[destruct & forms]]
-  `(+ 1 1)
-  `((fn [data#]
-      (let [~destruct data#]
-        ~@forms))))
+  `(~(dotfn
+      `(let [~destruct .]
+         ~@forms))))

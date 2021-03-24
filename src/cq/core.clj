@@ -15,39 +15,49 @@
 
 (def bindings specter-bindings)
 
-(defn- my-eval
-  [op data exps]
+(defn- eval*
+  [form opts]
+  (sci/eval-form (sci/init opts) form))
+
+(defn- eval-with-data
+  [->form data]
   (let [data-var `x#
-        opts {:bindings {'my-eval my-eval
-                         data-var data}}
-        form (concat `(~op ~data-var) exps)]
-    (sci/eval-form (sci/init opts)
-                   `(do
-                      (~'require '[clojure.string :as ~'str])
-                      ~form))))
+        opts {:bindings {'eval-with-data eval-with-data
+                         data-var        data}}]
+    (eval* (->form data-var) opts)))
 
-(def ->* (partial my-eval '->))
-(def ->>* (partial my-eval '->>))
-(def some->* (partial my-eval 'some->))
-(def some->>* (partial my-eval 'some->>))
+(defn- ->thread-fn
+  [op exps]
+  (fn [data-var]
+    `(~@op ~data-var ~@exps)))
 
-(def ->threading-fn
+(def ->* (partial ->thread-fn '(->)))
+(def ->>* (partial ->thread-fn '(->>)))
+(def some->* (partial ->thread-fn '(some->)))
+(def some->>* (partial ->thread-fn '(some->>)))
+(defn as->* [[var & exps]]
+  (fn [data-var]
+    `(as-> ~data-var ~var ~@exps)))
+
+(def ->form-fn
   {'-> ->*
    '->> ->>*
    'some-> some->*
-   'some->> some->>*})
+   'some->> some->>*
+   'as-> as->*})
 
 (defn- query*
-  [data [[e1] next-exp & future-exps :as exps]]
+  [data [[e1 :as first-exps] next-exps & future-exps :as exps]]
   (if (seq exps)
-    (if-let [thread-fn (->threading-fn e1)]
-      (query* (thread-fn data next-exp) future-exps)
-      (query* (->>* data e1) (rest exps)))
+    ;; TODO: extract function
+    (if-let [form-fn (->form-fn e1)]
+      (query* (eval-with-data (form-fn next-exps) data) future-exps)
+      (query* (eval-with-data (->>* first-exps) data) (rest exps)))
     data))
 
 (defn query
   [data exps]
-  (query* data (partition-by ->threading-fn exps)))
+  (query* data (partition-by ->form-fn exps)))
 
 (defn run
   [read! write! exps]

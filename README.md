@@ -87,6 +87,7 @@ Currently supported threading operators for redirection:
 - `->>` thread last
 - `some->` thread some
 - `some->>` thread some last
+- `as->` thread with var name
 
 ### Reader Macros
 

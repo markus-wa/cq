@@ -26,15 +26,21 @@ cq aims to:
 
 ```
 $ cq --help
-cq is a Clojure command-line data processor for JSON, EDN and other data formats.
+cq is a command-line data processor for JSON, YAML, EDN and other data formats that utilises Clojure as it's query language.
 
 Usage: cq [options] QUERY
 
 Options:
-  -i, --in FORMAT    json  Input format: edn, json, lines, msgpack, text
-  -o, --out FORMAT   edn   Output format: edn, json, lines, msgpack, text
-  -p, --[no-]pretty        Pretty print output - default is true
-  -k, --key-fn             Function used to transform keys
+  -i, --in FORMAT                         yaml     Input format: csv, edn, json, lines, msgpack, text, yaml
+  -o, --out FORMAT                        edn      Output format: csv, edn, json, lines, msgpack, text, yaml
+  -p, --[no-]pretty                                Pretty print output - default is true
+  -k, --key-fn FN                         keyword  Function used to transform keys - currently only supported for JSON and CSV
+      --yaml-unsafe                                Enables unsafe mode in clj-yaml / SnakeYAML
+      --[no]-yaml-keywords                         Turn map keys into keywords in clj-yaml - default is true
+      --yaml-max-aliases-for-collections           Sets max aliases for collections in clj-yaml / SnakeYAML
+      --yaml-allow-recursive-keys                  Allows recursive keys in clj-yaml / SnakeYAML
+      --yaml-allow-duplicate-keys                  Allows duplicate keys in clj-yaml / SnakeYAML
+      --yaml-flow-style STYLE             auto     Sets flow style in SnakeYAML
   -h, --help
 
 See https://github.com/markus-wa/cq for more information.

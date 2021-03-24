@@ -84,3 +84,14 @@
   (testing "writer"
     (is (= "a,b\n1,2\n3,4\n" (test-writer-str sut/->csv-writer nil [{:a 1, :b 2} {:a 3, :b 4}])))
     (is (= "1,2\n3,4\n" (test-writer-str sut/->csv-writer nil [[1 2] [3 4]])))))
+
+(deftest yaml
+  (testing "reader"
+    (is (= {:a {:b [1 2 3]}} (test-reader-str sut/->yaml-reader nil "{\"a\": {\"b\": [1, 2, 3]}}")))
+    (is (= {:a {:b [1 2 3]}} (test-reader-str sut/->yaml-reader nil "a:\n  b: [1, 2, 3]"))))
+
+  (testing "writer"
+    (is (= "a:\n  b: [1, 2, 3]\n" (test-writer-str sut/->yaml-writer nil {:a {:b [1 2 3]}})))
+
+    (testing "pretty"
+      (is (= "a:\n  b:\n  - 1\n  - 2\n  - 3\n" (test-writer-str sut/->yaml-writer {:yaml-flow-style :block} {:a {:b [1 2 3]}}))))))

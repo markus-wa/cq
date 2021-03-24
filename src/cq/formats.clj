@@ -5,7 +5,8 @@
             [clojure.pprint :as ppt]
             [clojure.java.io :as io]
             [msgpack.core :as mp]
-            [msgpack.clojure-extensions])
+            [msgpack.clojure-extensions]
+            [clj-yaml.core :as yaml])
   (:import [java.io PushbackReader]))
 
 (defn ->json-reader
@@ -77,22 +78,23 @@
       (println data))))
 
 (defn- csv->maps
-  [[headers & data]]
-  (let [headers (map keyword headers)
+  [[headers & data]
+   {:keys [key-fn] :or {key-fn keyword}}]
+  (let [headers (map key-fn headers)
         row->map (fn [m k v]
                    (assoc m (nth headers k) v))]
     (for [row data]
       (reduce-kv row->map {} row))))
 
 (defn ->csv-reader
-  [{:keys [csv-no-header]}]
+  [{:keys [csv-no-header] :as opts}]
   (fn [in]
     (with-open [r (io/reader in)]
       (let [data (csv/read-csv r)]
         (doall data)
         (if csv-no-header
           data
-          (csv->maps data))))))
+          (csv->maps data opts))))))
 
 (defn- maps->csv
   [[row1 :as data]]
@@ -111,6 +113,27 @@
       (with-open [w (io/writer out)]
         (csv/write-csv w data)))))
 
+;; TODO: switch to yaml/parse-stream once https://github.com/clj-commons/clj-yaml/pull/20 is merged
+(defn ->yaml-reader
+  [{:keys [yaml-unsafe yaml-keywords yaml-max-aliases-for-collections yaml-allow-recursive-keys yaml-allow-duplicate-keys]
+    :or {yaml-keywords true}}]
+  (let [opts [:unsafe yaml-unsafe
+              :keywords yaml-keywords
+              :max-aliases-for-collections yaml-max-aliases-for-collections
+              :allow-recursive-keys yaml-allow-recursive-keys
+              :allow-duplicate-keys yaml-allow-duplicate-keys]]
+    (fn [in]
+      (apply yaml/parse-string (slurp (io/reader in)) opts))))
+
+(defn ->yaml-writer
+  [{:keys [yaml-flow-style]
+    :or {yaml-flow-style :auto}}]
+  (let [opts [:dumper-options {:flow-style (keyword yaml-flow-style)}]]
+    (fn [data out]
+      (binding [*out* (io/writer out)]
+        (print (apply yaml/generate-string data opts))
+        (flush)))))
+
 (def formats
   {"json"    {:->reader ->json-reader
               :->writer ->json-writer}
@@ -123,7 +146,9 @@
    "text"    {:->reader ->text-reader
               :->writer ->text-writer}
    "csv"     {:->reader ->csv-reader
-              :->writer ->csv-writer}})
+              :->writer ->csv-writer}
+   "yaml"    {:->reader ->yaml-reader
+              :->writer ->yaml-writer}})
 
 (defn format->reader
   [format in opts]

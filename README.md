@@ -110,9 +110,7 @@ This table explains the different reader macros provided by `cq`.
 
 ... much more to come
 
-- 'thread as' redirect
 - integrate [medley](https://github.com/weavejester/medley)
-- YAML support
 - Transit support
 - maybe [XML](https://github.com/tolitius/xml-in), [HTML](https://github.com/davidsantiago/hickory) & Parquet support
 

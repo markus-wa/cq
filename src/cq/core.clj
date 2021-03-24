@@ -1,19 +1,26 @@
 (ns cq.core
-  (:require [sci.core :as sci]))
+  (:require [sci.core :as sci]
+            [medley.core :as m]))
 
-;; set up sci bindings for specter
+;; set up sci bindings for specter and medley
 (require 'com.rpl.specter)
 
 (def specter-bindings
-  (let [specter-publics (ns-publics (the-ns 'com.rpl.specter))
-        ->bindings
-        (fn [acc [k v]]
-          (let [k* (symbol (format "%s*" k))
-                v (or (specter-publics k*) v)]
-            (assoc acc k (var-get v))))]
-    (reduce ->bindings {} specter-publics)))
+  (let [publics (ns-publics (the-ns 'com.rpl.specter))]
+    (m/map-kv-vals
+     (fn [k v]
+       (let [k* (symbol (format "%s*" k))]
+         (var-get (or (publics k*) v))))
+     publics)))
 
-(def bindings specter-bindings)
+(def medley-bindings
+  (->> (the-ns 'medley.core)
+       ns-publics
+       (m/map-vals var-get)))
+
+(def bindings
+  (merge specter-bindings
+         medley-bindings))
 
 (defn- eval*
   [form opts]
@@ -22,8 +29,10 @@
 (defn- eval-with-data
   [->form data]
   (let [data-var `x#
-        opts {:bindings {'eval-with-data eval-with-data
-                         data-var        data}}]
+        bindings (merge bindings
+                        {'eval-with-data eval-with-data
+                         data-var        data})
+        opts {:bindings bindings}]
     (eval* (->form data-var) opts)))
 
 (defn- ->thread-fn

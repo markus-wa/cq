@@ -17,7 +17,7 @@ cq aims to:
 
 ## Features
 
-- Comes with [Specter](https://github.com/redplanetlabs/specter) for transforming nested data structures
+- Comes with [Specter](https://github.com/redplanetlabs/specter) and [medley](https://github.com/weavejester/medley) for transforming nested data structures and utilities
 - Various [reader macros](#reader-macros) that make writing queries easier
 - [Threading macro redirection](#threading-macro-redirection) reduces need for parentheses
 - Supports all elements of Clojure that are supported by [SCI](https://github.com/borkdude/sci)
@@ -109,10 +109,7 @@ This table explains the different reader macros provided by `cq`.
 
 ## TODO
 
-... much more to come
-
-- integrate [medley](https://github.com/weavejester/medley)
-- Transit support
+- [Transit](https://github.com/cognitect/transit-clj) support
 - maybe [XML](https://github.com/tolitius/xml-in), [HTML](https://github.com/davidsantiago/hickory) & Parquet support
 
 ## Acknowledgements

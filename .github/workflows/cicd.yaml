@@ -36,12 +36,12 @@ jobs:
       - name: Test Linux & OSX
         if: ${{ matrix.os != 'windows-latest' }}
         shell: bash
-        run: clojure -Mtest
+        run: clojure -M:test
 
       - name: Test Windows
         if: ${{ matrix.os == 'windows-latest' }}
         shell: powershell
-        run: clojure -Mtest
+        run: clojure -M:test
 
   jar:
     runs-on: ubuntu-latest
@@ -107,12 +107,16 @@ jobs:
       - name: Build Linux & OSX
         if: ${{ matrix.os != 'windows-latest' }}
         shell: bash
-        run: ./package/native-image.sh
+        run: |
+          ./package/native-image.sh
+          mv target/cq target/cq-${{ matrix.os }}
 
       - name: Build Windows
         if: ${{ matrix.os == 'windows-latest' }}
         shell: powershell
-        run: package\native-image.bat
+        run: |
+          package\native-image.bat
+          mv target\cq.exe target\cq-win.exe
 
       - name: 'Upload Native Image Artifact'
         uses: actions/upload-artifact@v2-preview

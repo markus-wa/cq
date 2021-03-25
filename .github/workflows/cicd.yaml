@@ -88,14 +88,14 @@ jobs:
         if: ${{ matrix.os != 'windows-latest' }}
         shell: bash
         run: |
-          ./package/native-image.sh
+          ./package/build-native.sh
           mv target/cq target/cq-${{ matrix.os }}
 
       - name: Build Windows
         if: ${{ matrix.os == 'windows-latest' }}
         shell: powershell
         run: |
-          package\native-image.bat
+          package\build-native.bat
           mv target\cq.exe target\cq-win.exe
 
       - name: Upload Native Image Artifact

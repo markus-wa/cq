@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 cd "$( dirname "${BASH_SOURCE[0]}" )/.."
 mkdir -p classes
 clojure -M -e "(compile 'cq.main)"

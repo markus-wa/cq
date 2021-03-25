@@ -58,7 +58,7 @@ jobs:
       - name: 'Upload JAR Artifact'
         uses: actions/upload-artifact@v2-preview
         with:
-          name: 'cq-${{github.ref}}-jvm'
+          name: 'cq-jvm'
           path: target/cq*
 
   native:
@@ -84,7 +84,7 @@ jobs:
 
       - uses: actions/download-artifact@v2
         with:
-          name: 'cq-${{github.ref}}-jvm'
+          name: 'cq-jvm'
 
       - uses: DeLaGuardo/setup-graalvm@4.0
         with:
@@ -113,10 +113,12 @@ jobs:
       - name: 'Upload Native Image Artifact'
         uses: actions/upload-artifact@v2-preview
         with:
-          name: 'cq-${{github.ref}}-all'
+          name: 'cq-all'
           path: target/cq*
 
   release:
+    if: startsWith(github.ref, 'refs/tags/')
+
     needs: [test, native]
 
     runs-on: ubuntu-latest
@@ -127,11 +129,10 @@ jobs:
 
       - uses: actions/download-artifact@v2
         with:
-          name: 'cq-${{github.ref}}-all'
+          name: 'cq-all'
 
       - name: Release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
             ./target/cq*

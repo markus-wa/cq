@@ -23,6 +23,12 @@ cq aims to:
 - Supports all elements of Clojure that are supported by [SCI](https://github.com/borkdude/sci)
 - No startup lag thanks to GraalVM native-images
 
+## Installation
+
+Download the latest version for your OS from the [releases](https://github.com/markus-wa/cq/releases) page.
+
+You should avoid `cq-jvm` and `cq-jvm.exe` if possible as these are not GraalVM native images and will be slow to start.
+
 ## Usage
 
 ```

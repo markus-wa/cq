@@ -1,0 +1,147 @@
+name: Release
+
+on:
+  push:
+    tags: {}
+
+jobs:
+
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        gu-binary: [gu, gu.cmd]
+        exclude:
+          - os: ubuntu-latest
+            gu-binary: gu.cmd
+          - os: macos-latest
+            gu-binary: gu.cmd
+          - os: windows-latest
+            gu-binary: gu
+
+    runs-on: {{ matrix.os }}
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+
+      - name: 'Setup Java 11'
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Install clojure tools
+        uses: DeLaGuardo/setup-clojure@3.2
+        with:
+          cli: latest
+
+      - name: Test Linux & OSX
+        if: ${{ matrix.os != 'windows-latest' }}
+        shell: bash
+        run: clojure -Mtest
+
+      - name: Test Windows
+        if: ${{ matrix.os == 'windows-latest' }}
+        shell: powershell
+        run: clojure -Mtest
+
+  jar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+
+      - name: 'Setup Java 11'
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Install clojure tools
+        uses: DeLaGuardo/setup-clojure@3.2
+        with:
+          cli: latest
+
+      - name: 'Build JAR'
+        run: package/package.sh
+
+      - name: 'Upload JAR Artifact'
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: 'cq-${{github.ref}}-jvm'
+          path: target/cq*
+
+  native:
+    needs: jar
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        gu-binary: [gu, gu.cmd]
+        exclude:
+          - os: ubuntu-latest
+            gu-binary: gu.cmd
+          - os: macos-latest
+            gu-binary: gu.cmd
+          - os: windows-latest
+            gu-binary: gu
+
+    runs-on: {{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: 'cq-${{github.ref}}-jvm'
+
+      - uses: DeLaGuardo/setup-graalvm@4.0
+        with:
+          graalvm: '21.0.0.2'
+          java: 'java11'
+          arch: 'amd64'
+
+      - name: Install native-image component
+        run: |
+          ${{ matrix.gu-binary }} install native-image
+
+      - name: Build Linux & OSX
+        if: ${{ matrix.os != 'windows-latest' }}
+        shell: bash
+        run: ./package/native-image.sh
+
+      - name: Build Windows
+        if: ${{ matrix.os == 'windows-latest' }}
+        shell: powershell
+        run: package\native-image.bat
+
+      - name: 'Upload Native Image Artifact'
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: 'cq-${{github.ref}}-all'
+          path: target/cq*
+
+  release:
+    needs: [test, native]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: 'cq-${{github.ref}}-all'
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            ./target/cq*
+            LICENSE
+            README.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,4 +1,4 @@
-cd %0\..
+cd %~dp0
 
 native-image --report-unsupported-elements-at-runtime ^
              --initialize-at-build-time ^

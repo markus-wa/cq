@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
 
-  test:
+  build:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
@@ -12,15 +12,15 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: 'Checkout'
+      - name: Checkout
         uses: actions/checkout@v2
 
-      - name: 'Setup Java 11'
+      - name: Setup Java 11
         uses: actions/setup-java@v1
         with:
           java-version: 11
 
-      - name: Install clojure tools
+      - name: Install Clojure Tools
         uses: DeLaGuardo/setup-clojure@3.2
         with:
           cli: 1.10.1.693
@@ -35,34 +35,19 @@ jobs:
         shell: powershell
         run: clojure -M:test
 
-  jar:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-
-      - name: 'Setup Java 11'
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-
-      - name: Install clojure tools
-        uses: DeLaGuardo/setup-clojure@3.2
-        with:
-          cli: latest
-
-      - name: 'Build JAR'
+      - name: Build JAR
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: package/package.sh
 
-      - name: 'Upload JAR Artifact'
+      - name: Upload JAR Artifacts
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: actions/upload-artifact@v2-preview
         with:
-          name: 'cq-jvm'
+          name: cq-jvm
           path: target/cq*
 
   native:
-    needs: jar
+    needs: build
 
     strategy:
       matrix:
@@ -82,17 +67,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - uses: actions/download-artifact@v2
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
         with:
-          name: 'cq-jvm'
+          name: cq-jvm
+          path: target
 
-      - uses: DeLaGuardo/setup-graalvm@4.0
+      - name: Setup GraalVM
+        uses: DeLaGuardo/setup-graalvm@4.0
         with:
           graalvm: '21.0.0.2'
-          java: 'java11'
-          arch: 'amd64'
+          java: java11
+          arch: amd64
 
-      - name: Install native-image component
+      - name: Install native-image Component
         run: |
           ${{ matrix.gu-binary }} install native-image
 
@@ -110,16 +98,16 @@ jobs:
           package\native-image.bat
           mv target\cq.exe target\cq-win.exe
 
-      - name: 'Upload Native Image Artifact'
+      - name: Upload Native Image Artifact
         uses: actions/upload-artifact@v2-preview
         with:
-          name: 'cq-all'
+          name: cq-all
           path: target/cq*
 
   release:
     if: startsWith(github.ref, 'refs/tags/')
 
-    needs: [test, native]
+    needs: [native]
 
     runs-on: ubuntu-latest
 
@@ -127,9 +115,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - uses: actions/download-artifact@v2
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
         with:
-          name: 'cq-all'
+          name: cq-all
 
       - name: Release
         uses: softprops/action-gh-release@v1

@@ -1,7 +1,8 @@
 (ns cq.formats-test
   (:require [cq.formats :as sut]
             [clojure.test :refer :all]
-            [clojure.java.io :as io])
+            [clojure.java.io :as io]
+            [clojure.string :as str])
   (:import [java.io ByteArrayInputStream BufferedInputStream PrintStream ByteArrayOutputStream]))
 
 (defn- to-out-stream
@@ -20,7 +21,7 @@
 
 (defn- test-writer-str
   [->writer opts data]
-  (.toString (to-out-stream (->writer opts) data)))
+  (str/replace (.toString (to-out-stream (->writer opts) data)) #"\r\n" "\n"))
 
 (defn- test-writer-bytes
   [->writer opts data]

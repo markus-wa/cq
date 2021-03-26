@@ -5,6 +5,9 @@ Command-line Data Processor for JSON, EDN and other data formats.
 The joy of Clojure's [threading macros](https://clojure.org/guides/threading_macros), but on the command line!
 
 [![CI / CD](https://github.com/markus-wa/cq/actions/workflows/cicd.yaml/badge.svg)](https://github.com/markus-wa/cq/actions/workflows/cicd.yaml)
+[![codecov](https://codecov.io/gh/markus-wa/cq/branch/main/graph/badge.svg?token=zGovO2H0bm)](https://codecov.io/gh/markus-wa/cq)
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/markus-wa/cq)](https://github.com/markus-wa/cq/releases)
+[![License](https://img.shields.io/badge/license-EPL--2.0-blue)](LICENSE)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmarkus-wa%2Fcq.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmarkus-wa%2Fcq?ref=badge_shield)
 
 ## Rationale
@@ -130,4 +133,7 @@ This project takes a lot of inspiration from [`jq`](https://stedolan.github.io/j
 
 
 ## License
+
+This project is licensed under the [EPL-2.0 License](LICENSE).
+
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmarkus-wa%2Fcq.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmarkus-wa%2Fcq?ref=badge_large)

@@ -23,6 +23,7 @@
    :main-opts ["-m" "cognitect.test-runner"]}
   :kaocha
   {:extra-paths ["test" "test/resources"]
+   :main-opts ["-m" "kaocha.runner"]
    :extra-deps
    {lambdaisland/kaocha {:mvn/version "1.0.829"}
     lambdaisland/kaocha-cloverage {:mvn/version "1.0.75"}}}}}

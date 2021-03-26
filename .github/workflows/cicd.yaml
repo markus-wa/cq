@@ -28,12 +28,16 @@ jobs:
       - name: Test Linux & OSX
         if: ${{ matrix.os != 'windows-latest' }}
         shell: bash
-        run: clojure -M:test
+        run: clojure -M:kaocha --plugin cloverage
 
       - name: Test Windows
         if: ${{ matrix.os == 'windows-latest' }}
         shell: powershell
-        run: clojure -M:test
+        run: clojure -M:kaocha --plugin cloverage
+
+      - uses: codecov/codecov-action@v1
+        with:
+          flags: ${{ matrix.os }}
 
       - name: Build JAR
         if: ${{ matrix.os == 'ubuntu-latest' }}

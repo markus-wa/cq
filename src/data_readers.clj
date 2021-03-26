@@ -1,3 +1,4 @@
 {|   cq.readers/|*
  map cq.readers/map*
- &   cq.readers/&*}
+ &   cq.readers/&*
+ f   cq.readers/f*}

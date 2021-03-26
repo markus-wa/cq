@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
 
-  static-analysis:
+  pom:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -23,6 +23,24 @@ jobs:
       - name: Generate pom.xml
         shell: bash
         run: clojure -Spom
+
+      - name: Upload JAR Artifacts
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: pom
+          path: pom.xml
+
+  deps-check:
+    needs: pom
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Download pom.xml
+        uses: actions/download-artifact@v2
+        with:
+          name: pom
 
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/maven@master
@@ -77,6 +95,8 @@ jobs:
           path: target/cq*
 
   native:
+    if: startsWith(github.ref, 'refs/tags/')
+
     needs: build
 
     strategy:
@@ -148,7 +168,7 @@ jobs:
   release:
     if: startsWith(github.ref, 'refs/tags/')
 
-    needs: [native]
+    needs: native
 
     runs-on: ubuntu-latest
 

@@ -88,19 +88,26 @@ jobs:
         if: ${{ matrix.os == 'windows-latest' }}
         uses: ilammy/msvc-dev-cmd@v1
 
-      - name: Build Linux & OSX
-        if: ${{ matrix.os != 'windows-latest' }}
+      - name: Build Linux
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         shell: bash
         run: |
           ./package/build-native.sh
-          mv target/cq target/cq-${{ matrix.os }}
+          mv target/cq target/cq-native-linux
+
+      - name: Build OSX
+        if: ${{ matrix.os == 'macos-latest' }}
+        shell: bash
+        run: |
+          ./package/build-native.sh
+          mv target/cq target/cq-native-macos
 
       - name: Build Windows
         if: ${{ matrix.os == 'windows-latest' }}
         shell: powershell
         run: |
           package\build-native.bat
-          mv target\cq.exe target\cq-win.exe
+          mv target\cq.exe target\cq-native-windows.exe
 
       - name: Upload Native Image Artifact
         uses: actions/upload-artifact@v2-preview
@@ -125,11 +132,19 @@ jobs:
           name: cq-all
           path: target
 
+      - name: Rename cq-jvm to -SLOW
+        shell: bash
+        run: |
+          mv target/cq-jvm target/cq-jvm-slow
+          mv target/cq-jvm.exe target/cq-jvm-slow.exe
+
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            ./target/cq*
+            ./target/cq-jvm*
+            ./target/cq-native*
+            ./target/cq.jar
             LICENSE
             README.md
         env:

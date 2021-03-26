@@ -25,7 +25,10 @@ cq aims to:
 
 ## Installation
 
-Download the latest version for your OS from the [releases](https://github.com/markus-wa/cq/releases) page.
+1. Download the latest version for your OS from the [releases](https://github.com/markus-wa/cq/releases) page.
+2. Rename binary to `cq`
+3. `chmod +x cq`
+4. Move into a location on `$PATH`
 
 You should avoid `cq-jvm` if possible as these are not GraalVM native images and will be slow to start.
 

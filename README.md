@@ -4,6 +4,8 @@ Command-line Data Processor for JSON, EDN and other data formats.
 
 The joy of Clojure's [threading macros](https://clojure.org/guides/threading_macros), but on the command line!
 
+[![CI / CD](https://github.com/markus-wa/cq/actions/workflows/cicd.yaml/badge.svg)](https://github.com/markus-wa/cq/actions/workflows/cicd.yaml)
+
 ## Rationale
 
 While there are a few similar tools out there, such as jq, jet and babashka, these all have one or more reasons making them less suitable for command-line data processing.

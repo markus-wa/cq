@@ -27,7 +27,7 @@ cq aims to:
 
 Download the latest version for your OS from the [releases](https://github.com/markus-wa/cq/releases) page.
 
-You should avoid `cq-jvm*` if possible as these are not GraalVM native images and will be slow to start.
+You should avoid `cq-jvm` if possible as these are not GraalVM native images and will be slow to start.
 
 ## Usage
 

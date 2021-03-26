@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
 
-  pom:
+  static-analysis:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,34 +20,19 @@ jobs:
         with:
           cli: 1.10.1.693
 
+      - name: Install Snyk
+        uses: snyk/actions/setup@master
+
       - name: Generate pom.xml
         shell: bash
         run: clojure -Spom
 
-      - name: Upload JAR Artifacts
-        uses: actions/upload-artifact@v2-preview
-        with:
-          name: pom
-          path: pom.xml
-
-  deps-check:
-    needs: pom
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Download pom.xml
-        uses: actions/download-artifact@v2
-        with:
-          name: pom
-
       - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/maven@master
+        run: snyk monitor
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-      - name: Run FOSSA scan and upload build data
+      - name: Run FOSSA to scan licenses
         uses: fossa-contrib/fossa-action@v1
         with:
           fossa-api-key: ${{ secrets.FOSSA_API_KEY }}

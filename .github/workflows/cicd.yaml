@@ -4,6 +4,36 @@ on: [push]
 
 jobs:
 
+  snyk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Java 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Install Clojure Tools
+        uses: DeLaGuardo/setup-clojure@3.2
+        with:
+          cli: 1.10.1.693
+
+      - name: Generate pom.xml
+        shell: bash
+        run: clojure -Spom
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Run FOSSA scan and upload build data
+        uses: fossa-contrib/fossa-action@v1
+        with:
+          fossa-api-key: ${{ secrets.FOSSA_API_KEY }}
+
   build:
     strategy:
       matrix:

@@ -36,7 +36,12 @@
 (defn usage [options-summary]
   (->> ["cq is a command-line data processor for JSON, YAML, EDN and other data formats that utilises Clojure as it's query language."
         ""
-        "Usage: cq [options] QUERY"
+        "Usage: cq [options] [--] QUERY"
+        ""
+        "Examples"
+        "  echo '{a: {b: [1, 2, 3]}}' | cq ':a :b (map inc)'"
+        ""
+        "  printf 'http://example.com/some/path' | cq -i text -- '-> str/upper-case (str/split #\"/\") ->> (map str/reverse)'"
         ""
         "Options:"
         options-summary
@@ -76,6 +81,11 @@
        (format "[%s]")
        read-string))
 
+;; we want to use System/in and out instead of *in* *out*
+;; as it's easier to convert to the reader/writer formats we need in formats.clj
+(def ^:dynamic *stdin* System/in)
+(def ^:dynamic *stdout* System/out)
+
 (defn main
   [args]
   (let [{:keys [arguments exit-message ok?]
@@ -84,8 +94,8 @@
     (if exit-message
       (exit (if ok? 0 1) exit-message)
       (let [expressions (args->exprs arguments)
-            reader (fmt/format->reader in System/in opts)
-            writer (fmt/format->writer out System/out opts)]
+            reader (fmt/format->reader in *stdin* opts)
+            writer (fmt/format->writer out *stdout* opts)]
         (cq/run reader writer expressions)))))
 
 (defn -main
@@ -93,7 +103,9 @@
   (try
     (main args)
     (catch Exception e
-      (println e))))
+      (binding [*out* *err*]
+        (println e)
+        (System/exit 1)))))
 
 (comment
   (cq/query {:a 1}

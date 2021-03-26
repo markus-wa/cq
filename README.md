@@ -8,6 +8,7 @@ The joy of Clojure's [threading macros](https://clojure.org/guides/threading_mac
 [![codecov](https://codecov.io/gh/markus-wa/cq/branch/main/graph/badge.svg?token=zGovO2H0bm)](https://codecov.io/gh/markus-wa/cq)
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/markus-wa/cq)](https://github.com/markus-wa/cq/releases)
 [![License](https://img.shields.io/badge/license-EPL--2.0-blue)](LICENSE)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmarkus-wa%2Fcq.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmarkus-wa%2Fcq?ref=badge_shield)
 
 ## Rationale
 
@@ -129,3 +130,10 @@ This table explains the different reader macros provided by `cq`.
 ## Acknowledgements
 
 This project takes a lot of inspiration from [`jq`](https://stedolan.github.io/jq/), [`jet`](https://github.com/borkdude/jet) and [`babashka`](https://github.com/babashka/babashka)
+
+
+## License
+
+This project is licensed under the [EPL-2.0 License](LICENSE).
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmarkus-wa%2Fcq.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmarkus-wa%2Fcq?ref=badge_large)

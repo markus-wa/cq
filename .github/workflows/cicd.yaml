@@ -61,12 +61,17 @@ jobs:
       - name: Test Linux & OSX
         if: ${{ matrix.os != 'windows-latest' }}
         shell: bash
-        run: clojure -M:test
+        run: clojure -M:kaocha --plugin cloverage --codecov
 
       - name: Test Windows
         if: ${{ matrix.os == 'windows-latest' }}
         shell: powershell
-        run: clojure -M:test
+        run: clojure -M:kaocha --plugin cloverage --codecov
+
+      - uses: codecov/codecov-action@v1
+        with:
+          files: target/coverage/codecov.json
+          flags: ${{ matrix.os }}
 
       - name: Build JAR
         if: ${{ matrix.os == 'ubuntu-latest' }}

@@ -1,7 +1,7 @@
 (ns cq.readers
   (:require [clojure.walk :refer [postwalk]]))
 
-(defn dotfn
+(defn- dotfn
   [form]
   ;; Clojure doesn't like . as var name
   (let [dot `dot#
@@ -23,3 +23,7 @@
   `(~(dotfn
       `(let [~destruct .]
          ~@forms))))
+
+(defn f*
+  [form]
+  (read-string (format "#(do %s)" form)))

@@ -44,7 +44,12 @@ You should avoid `cq-jvm` if possible as these are not GraalVM native images and
 $ cq --help
 cq is a command-line data processor for JSON, YAML, EDN and other data formats that utilises Clojure as it's query language.
 
-Usage: cq [options] QUERY
+Usage: cq [options] [--] QUERY
+
+Examples
+  echo '{a: {b: [1, 2, 3]}}' | cq ':a :b (map inc)'
+
+  printf 'http://example.com/some/path' | cq -i text -- '-> str/upper-case (str/split #"/") ->> (map str/reverse)'
 
 Options:
   -i, --in FORMAT                         yaml     Input format: csv, edn, json, lines, msgpack, text, yaml

@@ -88,6 +88,12 @@ $ printf "http://example.com/some/path" | \
 {:protocol "http:", :host "example.com"}
 ```
 
+`#f` can be used to simplify creating an anonymous function that returns a value, rather than calls a function.
+```bash
+$ echo '{a: {b: 2, c: 3}}' | cq ':a  (map-kv #f [%2 %1])'
+{2 :b, 3 :c}
+```
+
 ### Threading Macro Redirection
 
 While things like [`->->><?as->cond->!`](https://github.com/randomcorp/thread-first-thread-last-backwards-question-mark-as-arrow-cond-arrow-bang) are pretty funny,
@@ -121,6 +127,7 @@ This table explains the different reader macros provided by `cq`.
 | `#\| <f>`  | Use the current value as `.` | `((fn [.] <f>))` | `#\| (< 5 . 10)` |
 | `#map <f>` | Map elements of a seq | `(map (fn [.] <f>))` | `#map {:a (:a .) :first-child (-> . :children first)}` |
 | `#& (<d> <f...>)` | Destructure into vars | `((fn [.] (let [<d> .] <f>)` | `#& ({:keys [a b c]} [a b c]})` |
+| `#f <f> | Anonymous function, returns value of f, not evaluation of f | `#(do f)` | `(map-kv #f [%2 %1])` |
 
 ## TODO
 

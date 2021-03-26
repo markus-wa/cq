@@ -58,10 +58,9 @@
 (defn- query*
   [data [[e1 :as first-exps] next-exps & future-exps :as exps]]
   (if (seq exps)
-    ;; TODO: extract function
     (if-let [form-fn (->form-fn e1)]
-      (query* (eval-with-data (form-fn next-exps) data) future-exps)
-      (query* (eval-with-data (->>* first-exps) data) (rest exps)))
+      (recur (eval-with-data (form-fn next-exps) data) future-exps)
+      (recur (eval-with-data (->>* first-exps) data) (rest exps)))
     data))
 
 (defn query

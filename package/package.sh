@@ -8,9 +8,3 @@ clojure -M -m uberdeps.uberjar --deps-file ../deps.edn --target ../target/cq.jar
 
 clojure -M -m clj-bin.main --custom-preamble-script preamble.sh --jar ../target/cq.jar --out ../target/cq-jvm
 clojure -M -m clj-bin.main --custom-preamble-script preamble.bat --jar ../target/cq.jar --out ../target/cq-jvm.exe
-
-native-image --report-unsupported-elements-at-runtime \
-             --initialize-at-build-time \
-             --no-server \
-             -jar ../target/cq.jar \
-             -H:Name=../target/cq

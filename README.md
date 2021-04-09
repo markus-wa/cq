@@ -12,7 +12,7 @@ The joy of Clojure's threading macros, but on the command line!
 
 ## Rationale
 
-While there are a few similar tools out there, such as jq, jet and babashka, these all have one or more reasons making them less suitable for command-line data processing.
+While there are a few similar tools out there, such as jq, jet and babashka, these all have one or more reasons making them less suitable for certain command-line data processing tasks.
 
 cq aims to:
 

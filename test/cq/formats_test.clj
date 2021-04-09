@@ -96,3 +96,10 @@
 
     (testing "pretty"
       (is (= "a:\n  b:\n  - 1\n  - 2\n  - 3\n" (test-writer-str sut/->yaml-writer {:yaml-flow-style :block} {:a {:b [1 2 3]}}))))))
+
+(deftest transit
+  (testing "reader"
+    (is (= {:a {:b [1 2 3]}} (test-reader-str sut/->transit-reader nil "[\"^ \",\"~:a\",[\"^ \",\"~:b\",[1,2,3]]]"))))
+
+  (testing "writer"
+    (is (= "[\"^ \",\"~:a\",[\"^ \",\"~:b\",[1,2,3]]]" (test-writer-str sut/->transit-writer nil {:a {:b [1 2 3]}})))))

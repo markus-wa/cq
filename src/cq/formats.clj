@@ -6,7 +6,8 @@
             [clojure.java.io :as io]
             [msgpack.core :as mp]
             [msgpack.clojure-extensions]
-            [clj-yaml.core :as yaml])
+            [clj-yaml.core :as yaml]
+            [cognitect.transit :as transit])
   (:import [java.io PushbackReader]))
 
 (defn ->json-reader
@@ -134,6 +135,22 @@
         (print (apply yaml/generate-string data opts))
         (flush)))))
 
+(defn ->transit-reader
+  [{:keys [transit-format-in]
+    :or {transit-format-in :json}}]
+  (fn [in]
+    (-> in
+        (transit/reader (keyword transit-format-in))
+        transit/read)))
+
+(defn ->transit-writer
+  [{:keys [transit-format-out]
+    :or {transit-format-out :json}}]
+  (fn [data out]
+    (-> out
+        (transit/writer (keyword transit-format-out))
+        (transit/write data))))
+
 (def formats
   {"json"    {:->reader ->json-reader
               :->writer ->json-writer}
@@ -148,7 +165,9 @@
    "csv"     {:->reader ->csv-reader
               :->writer ->csv-writer}
    "yaml"    {:->reader ->yaml-reader
-              :->writer ->yaml-writer}})
+              :->writer ->yaml-writer}
+   "transit" {:->reader ->transit-reader
+              :->writer ->transit-writer}})
 
 (defn format->reader
   [format in opts]

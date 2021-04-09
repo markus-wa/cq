@@ -11,6 +11,10 @@
 
 (def formats-str (str/join ", " (sort formats)))
 
+(def yaml-flow-styles #{"auto" "block" "flow"})
+
+(def transit-formats #{"json" "json-verbose" "msgpack"})
+
 (def cli-options
   [["-i" "--in FORMAT" (str "Input format: " formats-str)
     :default "yaml"
@@ -28,9 +32,15 @@
    [nil "--yaml-max-aliases-for-collections" "Sets max aliases for collections in clj-yaml / SnakeYAML"]
    [nil "--yaml-allow-recursive-keys" "Allows recursive keys in clj-yaml / SnakeYAML"]
    [nil "--yaml-allow-duplicate-keys" "Allows duplicate keys in clj-yaml / SnakeYAML"]
-   [nil "--yaml-flow-style STYLE" "Sets flow style in SnakeYAML"
+   [nil "--yaml-flow-style STYLE" (str "Sets flow style in SnakeYAML: " (str/join ", " (sort yaml-flow-styles)))
     :default "auto"
-    :validate #{"auto" "block" "flow"}]
+    :validate [yaml-flow-styles]]
+   [nil "--transit-format-in FORMAT" (str "Set the reader type for transit: " (str/join ", " (sort transit-formats)))
+    :default "json"
+    :validate [transit-formats]]
+   [nil "--transit-format-out FORMAT" (str "Set the writer type for transit: " (str/join ", " (sort transit-formats)))
+    :default "json"
+    :validate [transit-formats]]
    ["-h" "--help"]])
 
 (defn usage [options-summary]

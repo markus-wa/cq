@@ -28,6 +28,7 @@ cq aims to:
 - [Threading macro redirection](#threading-macro-redirection) reduces need for parentheses
 - Supports all elements of Clojure that are supported by [SCI](https://github.com/borkdude/sci)
 - No startup lag thanks to GraalVM native-images
+- Data Formats: YAML, JSON, MsgPack, CSV, Cognitec's Transit format, Text (raw and line-separated)
 
 ## Installation
 
@@ -52,8 +53,8 @@ Examples
   printf 'http://example.com/some/path' | cq -i text -- '-> str/upper-case (str/split #"/") ->> (map str/reverse)'
 
 Options:
-  -i, --in FORMAT                         yaml     Input format: csv, edn, json, lines, msgpack, text, yaml
-  -o, --out FORMAT                        edn      Output format: csv, edn, json, lines, msgpack, text, yaml
+  -i, --in FORMAT                         yaml     Input format: csv, edn, json, lines, msgpack, text, transit, yaml
+  -o, --out FORMAT                        edn      Output format: csv, edn, json, lines, msgpack, text, transit, yaml
   -p, --[no-]pretty                                Pretty print output - default is true
   -k, --key-fn FN                         keyword  Function used to transform keys - currently only supported for JSON and CSV
       --yaml-unsafe                                Enables unsafe mode in clj-yaml / SnakeYAML
@@ -61,7 +62,9 @@ Options:
       --yaml-max-aliases-for-collections           Sets max aliases for collections in clj-yaml / SnakeYAML
       --yaml-allow-recursive-keys                  Allows recursive keys in clj-yaml / SnakeYAML
       --yaml-allow-duplicate-keys                  Allows duplicate keys in clj-yaml / SnakeYAML
-      --yaml-flow-style STYLE             auto     Sets flow style in SnakeYAML
+      --yaml-flow-style STYLE             auto     Sets flow style in SnakeYAML: auto, block, flow
+      --transit-format-in FORMAT          json     Set the reader type for transit: json, json-verbose, msgpack
+      --transit-format-out FORMAT         json     Set the writer type for transit: json, json-verbose, msgpack
   -h, --help
 
 See https://github.com/markus-wa/cq for more information.
@@ -136,7 +139,6 @@ This table explains the different reader macros provided by `cq`.
 
 ## TODO
 
-- [Transit](https://github.com/cognitect/transit-clj) support
 - maybe [XML](https://github.com/tolitius/xml-in), [HTML](https://github.com/davidsantiago/hickory) & Parquet support
 
 ## Acknowledgements

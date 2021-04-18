@@ -2,8 +2,9 @@
   (:require [sci.core :as sci]
             [medley.core :as m]))
 
-;; set up sci bindings for specter and medley
+;; set up sci bindings for specter, medley & camel-snake-kebab
 (require 'com.rpl.specter)
+(require 'camel-snake-kebab.core)
 
 (def specter-bindings
   (let [publics (ns-publics (the-ns 'com.rpl.specter))]
@@ -18,9 +19,15 @@
        ns-publics
        (m/map-vals var-get)))
 
+(def csk-bindings
+  (->> (the-ns 'camel-snake-kebab.core)
+       ns-publics
+       (m/map-vals var-get)))
+
 (def bindings
   (merge specter-bindings
-         medley-bindings))
+         medley-bindings
+         csk-bindings))
 
 (defn- eval*
   [form opts]

@@ -23,7 +23,7 @@ cq aims to:
 
 ## Features
 
-- Comes with [Specter](https://github.com/redplanetlabs/specter) and [medley](https://github.com/weavejester/medley) for transforming nested data structures and utilities
+- Comes with [Specter](https://github.com/redplanetlabs/specter), [medley](https://github.com/weavejester/medley) & [camel-snake-kebab](https://clj-commons.org/camel-snake-kebab/) for transforming nested data structures and utilities
 - Various [reader macros](#reader-macros) that make writing queries easier
 - [Threading macro redirection](#threading-macro-redirection) reduces need for parentheses
 - Supports all elements of Clojure that are supported by [SCI](https://github.com/borkdude/sci)

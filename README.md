@@ -29,6 +29,7 @@ cq aims to:
 - Supports all elements of Clojure that are supported by [SCI](https://github.com/borkdude/sci)
 - No startup lag thanks to GraalVM native-images
 - Data Formats: YAML, JSON, MsgPack, CSV, Cognitec's Transit format, Text (raw and line-separated)
+- Coloured output / syntax highlig for EDN output
 
 ## Installation
 

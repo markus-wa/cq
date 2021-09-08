@@ -7,7 +7,8 @@
             [msgpack.core :as mp]
             [msgpack.clojure-extensions]
             [clj-yaml.core :as yaml]
-            [cognitect.transit :as transit])
+            [cognitect.transit :as transit]
+            [puget.printer :as puget])
   (:import [java.io PushbackReader]))
 
 (defn ->json-reader
@@ -36,7 +37,8 @@
   [{:keys [pretty]}]
   (if pretty
     (fn [x out]
-      (ppt/pprint x (io/writer out)))
+      (binding [*out* (io/writer out)]
+        (puget/cprint x)))
     (fn [x out]
       (binding [*out* (io/writer out)]
         (pr x)

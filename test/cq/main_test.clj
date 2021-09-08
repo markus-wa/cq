@@ -11,7 +11,7 @@
   (let [stdout-stub (ByteArrayOutputStream.)]
     (binding [sut/*stdin* (stdin-stub input)
               sut/*stdout* (PrintStream. stdout-stub)]
-      (apply sut/-main args)
+      (apply sut/-main "--no-pretty" args)
       (read-string (.toString stdout-stub)))))
 
 (deftest main

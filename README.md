@@ -10,6 +10,8 @@ The joy of Clojure's threading macros, but on the command line!
 [![License](https://img.shields.io/badge/license-EPL--2.0-blue)](LICENSE)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmarkus-wa%2Fcq.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmarkus-wa%2Fcq?ref=badge_shield)
 
+![image](https://user-images.githubusercontent.com/5138316/132836292-e4c9e2fc-aa59-4431-a869-e2f7930ae1fd.png)
+
 ## Rationale
 
 While there are a few similar tools out there, such as jq, jet and babashka, these all have one or more reasons making them less suitable for certain command-line data processing tasks.
@@ -81,12 +83,11 @@ $ echo '{"a": {"b": [1, 2, 3]}}' | cq ':a :b (map inc)'
 Using `#|` you can use the current value as `.`.
 
 ```bash
-$ curl -s 'https://api.github.com/repos/stedolan/jq/commits?per_page=5' | \
-  cq 'first #| {:message (-> . :commit :message) :committer (-> . :commit :committer :name) :parents (->> . :parents (map :html_url))}'
-{:message "Fix #2197 extended regex pattern example",
- :committer "William Langford",
- :parents
- ("https://github.com/stedolan/jq/commit/a17dd3248a666d01be75f6b16be37e80e20b0954")}
+$ curl -s 'https://api.github.com/repos/markus-wa/cq/commits?per_page=5' | \
+cq 'second #| {:author (-> . :commit :author :name) :message (-> . :commit :message) :parents (->> . :parents (map :html_url))}'
+{:author "Markus Walther",
+ :message "tests: fix coloured output breaking tests",
+ :parents ("https://github.com/markus-wa/cq/commit/92ff81edbd6f53f0d20aa5a18ccf6cac53bbe50e")}
 ```
 
 There's also a destructuring macro `#&` to make using `(let)` easier.

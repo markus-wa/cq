@@ -139,6 +139,16 @@ This table explains the different reader macros provided by `cq`.
 | `#& (<d> <f...>)` | Destructure into vars | `((fn [.] (let [<d> .] <f>)` | `#& ({:keys [a b c]} [a b c]})` |
 | `#f <f>` | Anonymous function, returns value of f, not evaluation of f | `#(do <f>)` | `(map-kv #f [%2 %1])` |
 
+### Tips & Tricks
+
+#### cq is slow!
+
+Pretty printing can be pretty slow with the JSON and EDN libraries we use. one trick is to use `cq` for querying and `jq` for formatting.
+
+E.g. this is pretty fast
+
+    ca data.yaml | cq -o json --no-pretty | jq
+
 ## TODO
 
 - maybe [XML](https://github.com/tolitius/xml-in), [HTML](https://github.com/davidsantiago/hickory) & Parquet support

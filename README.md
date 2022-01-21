@@ -1,6 +1,6 @@
 # cq (Clojure Query)
 
-Command-line Data Processor for JSON, EDN and other data formats.
+Command-line Data Processor for EDN, YAML, JSON, XML and other data formats.
 
 The joy of Clojure's threading macros, but on the command line!
 
@@ -30,7 +30,7 @@ cq aims to:
 - [Threading macro redirection](#threading-macro-redirection) reduces need for parentheses
 - Supports all elements of Clojure that are supported by [SCI](https://github.com/borkdude/sci)
 - No startup lag thanks to GraalVM native-images
-- Data Formats: YAML, JSON, MsgPack, CSV, Cognitec's Transit format, Text (raw and line-separated)
+- Data Formats: EDN, YAML, JSON, XML, MsgPack, CSV, Cognitec's Transit format, Text (raw and line-separated)
 - Coloured output / syntax highlig for EDN output
 
 ## Installation

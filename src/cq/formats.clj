@@ -1,6 +1,7 @@
 (ns cq.formats
   (:require [clojure.data.csv :as csv]
             [clojure.data.json :as json]
+            [clojure.data.xml :as xml]
             [clojure.edn :as edn]
             [clojure.pprint :as ppt]
             [clojure.java.io :as io]
@@ -153,6 +154,18 @@
         (transit/writer (keyword transit-format-out))
         (transit/write data))))
 
+(defn ->xml-reader
+  [_]
+  (fn [in]
+    (xml/parse (io/reader in))))
+
+(defn ->xml-writer
+  [{:keys [pretty]}]
+  (let [emit (if pretty xml/indent xml/emit)]
+    (fn [x out]
+      (with-open [w (io/writer out)]
+        (emit x w)))))
+
 (def formats
   {"json"    {:->reader ->json-reader
               :->writer ->json-writer}
@@ -169,7 +182,9 @@
    "yaml"    {:->reader ->yaml-reader
               :->writer ->yaml-writer}
    "transit" {:->reader ->transit-reader
-              :->writer ->transit-writer}})
+              :->writer ->transit-writer}
+   "xml"     {:->reader ->xml-reader
+              :->writer ->xml-writer}})
 
 (defn format->reader
   [format in opts]

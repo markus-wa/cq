@@ -2,17 +2,19 @@
  :deps
  {org.clojure/clojure {:mvn/version "1.10.3"}
   org.clojure/data.csv {:mvn/version "1.0.0"}
+  org.clojure/data.xml {:mvn/version "0.2.0-alpha6"}
   org.clojure/data.json {:mvn/version "1.1.0"}
   org.clojure/tools.cli {:mvn/version "1.0.206"}
   org.clojure/tools.reader {:mvn/version "1.3.4"}
-  com.cognitect/transit-clj {:mvn/version "1.0.324"}
-  clojure-msgpack/clojure-msgpack {:mvn/version "1.2.1"}
   borkdude/sci {:mvn/version "0.2.4"}
-  mvxcvi/puget {:mvn/version "1.3.1"}
-  com.rpl/specter {:mvn/version "1.1.3"}
+  camel-snake-kebab/camel-snake-kebab {:mvn/version "0.4.2"}
   clj-commons/clj-yaml {:mvn/version "0.7.106"}
+  clojure-msgpack/clojure-msgpack {:mvn/version "1.2.1"}
+  com.rpl/specter {:mvn/version "1.1.3"}
+  com.cognitect/transit-clj {:mvn/version "1.0.324"}
   medley/medley {:mvn/version "1.3.0"}
-  camel-snake-kebab/camel-snake-kebab {:mvn/version "0.4.2"}}
+  mvxcvi/puget {:mvn/version "1.3.1"}
+  tolitius/xml-in {:mvn/version "0.1.1"}}
  :aliases
  {:run
   {:main-opts ["-m" "cq.main"]}

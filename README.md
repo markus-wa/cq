@@ -25,7 +25,7 @@ cq aims to:
 
 ## Features
 
-- Comes with [Specter](https://github.com/redplanetlabs/specter), [medley](https://github.com/weavejester/medley) & [camel-snake-kebab](https://clj-commons.org/camel-snake-kebab/) for transforming nested data structures and utilities
+- Comes with [Specter](https://github.com/redplanetlabs/specter) (`(s/...)`), [medley](https://github.com/weavejester/medley) (`(m/...)`), [camel-snake-kebab](https://clj-commons.org/camel-snake-kebab/) (`(csk/...)`) & [xml-in](https://github.com/tolitius/xml-in) (`(xml/...)`) for transforming nested data structures and utilities
 - Various [reader macros](#reader-macros) that make writing queries easier
 - [Threading macro redirection](#threading-macro-redirection) reduces need for parentheses
 - Supports all elements of Clojure that are supported by [SCI](https://github.com/borkdude/sci)
@@ -98,9 +98,10 @@ $ printf "http://example.com/some/path" | \
 {:protocol "http:", :host "example.com"}
 ```
 
-`#f` can be used to simplify creating an anonymous function that returns a value, rather than calls a function.
+`#f` can be used to simplify creating an anonymous function that returns a value, rather than calls a function.<br>
+Also note how `m/map-kv` is provided by `medley.core`.
 ```bash
-$ echo '{a: {b: 2, c: 3}}' | cq ':a  (map-kv #f [%2 %1])'
+$ echo '{a: {b: 2, c: 3}}' | cq ':a  (m/map-kv #f [%2 %1])'
 {2 :b, 3 :c}
 ```
 
@@ -126,6 +127,17 @@ Currently supported threading operators for redirection:
 - `some->` thread some
 - `some->>` thread some last
 - `as->` thread with var name
+
+### Included Libraries & Namespace Aliases
+
+```
+| Library | Namespace | Alias | Example Query |
+| ------- | --------- | ----- | ------- |
+| `xml-in` | `xml-in.core` | `xml`  | `'# | (xml/find-all . [:universe :system :solar :planet])'`        |
+| `medley` | `medley.core` | `m`    | `(m/mak-kv (fn [k v] [v k]))` |
+| `specter` | `com.rpl.specter`  | `s`    | `(s/transform [MAP-VALS MAP-VALS] inc)` |
+| `camel-snake-kebab` | `camel-snake-kebab.core` | `csk`  | `csk/->SCREAMING_SNAKE_CASE`     |
+```
 
 ### Reader Macros
 

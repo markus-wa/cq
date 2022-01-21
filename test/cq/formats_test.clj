@@ -103,3 +103,34 @@
 
   (testing "writer"
     (is (= "[\"^ \",\"~:a\",[\"^ \",\"~:b\",[1,2,3]]]" (test-writer-str sut/->transit-writer nil {:a {:b [1 2 3]}})))))
+
+(def test-xml-str
+  "<?xml version='1.0' encoding='utf-8'?>
+     <!DOCTYPE html SYSTEM 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>
+     <html xmlns='http://www.w3.org/1999/xhtml'>
+       <article>Hello</article>
+     </html>")
+
+(def test-xml-data
+  {:tag :xmlns.http%3A%2F%2Fwww.w3.org%2F1999%2Fxhtml/html,
+   :attrs {},
+   :content
+   '({:tag :xmlns.http%3A%2F%2Fwww.w3.org%2F1999%2Fxhtml/article,
+      :attrs {},
+      :content ("Hello")})})
+
+(deftest xml
+  (testing "reader"
+    (is (= test-xml-data
+           (test-reader-str sut/->xml-reader nil test-xml-str))))
+
+  (testing "writer"
+    (is (= "<?xml version=\"1.0\" encoding=\"UTF-8\"?><a:html xmlns:a=\"http://www.w3.org/1999/xhtml\"><a:article>Hello</a:article></a:html>"
+           (test-writer-str sut/->xml-writer nil test-xml-data)))
+
+    (testing "pretty"
+      (is (= "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<a:html xmlns:a=\"http://www.w3.org/1999/xhtml\">
+  <a:article>Hello</a:article>
+</a:html>\n"
+             (test-writer-str sut/->xml-writer {:pretty true} test-xml-data))))))

@@ -5,6 +5,7 @@
 ;; set up sci bindings for specter, medley & camel-snake-kebab
 (require 'com.rpl.specter)
 (require 'camel-snake-kebab.core)
+(require 'xml-in.core)
 
 (def specter-bindings
   (let [publics (ns-publics (the-ns 'com.rpl.specter))]
@@ -24,10 +25,10 @@
        ns-publics
        (m/map-vals var-get)))
 
-(def bindings
-  (merge specter-bindings
-         medley-bindings
-         csk-bindings))
+(def xml-in-bindings
+  (->> (the-ns 'xml-in.core)
+       ns-publics
+       (m/map-vals var-get)))
 
 (defn- eval*
   [form opts]
@@ -36,10 +37,14 @@
 (defn- eval-with-data
   [->form data]
   (let [data-var `x#
-        bindings (merge bindings
-                        {'eval-with-data eval-with-data
-                         data-var        data})
-        opts {:bindings bindings}]
+        bindings {'eval-with-data eval-with-data
+                  data-var        data}
+        opts {:bindings bindings
+              :namespaces
+              {'xml xml-in-bindings
+               'csk csk-bindings
+               'm medley-bindings
+               's specter-bindings}}]
     (eval* (->form data-var) opts)))
 
 (defn- ->thread-fn

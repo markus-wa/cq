@@ -130,14 +130,13 @@ Currently supported threading operators for redirection:
 
 ### Included Libraries & Namespace Aliases
 
-```
 | Library | Namespace | Alias | Example Query |
 | ------- | --------- | ----- | ------- |
-| `xml-in` | `xml-in.core` | `xml`  | `'# | (xml/find-all . [:universe :system :solar :planet])'`        |
-| `medley` | `medley.core` | `m`    | `(m/mak-kv (fn [k v] [v k]))` |
-| `specter` | `com.rpl.specter`  | `s`    | `(s/transform [MAP-VALS MAP-VALS] inc)` |
-| `camel-snake-kebab` | `camel-snake-kebab.core` | `csk`  | `csk/->SCREAMING_SNAKE_CASE`     |
-```
+| `tolitius/xml-in` | `xml-in.core` | `xml` | `#\| (xml/find-all . [:universe :system :solar :planet])` |
+| `medley` | `medley.core` | `m` | `(m/mak-kv (fn [k v] [v k]))` |
+| `com.rpl/specter` | `com.rpl.specter` | `s` | `(s/transform [MAP-VALS MAP-VALS] inc)` |
+| `camel-snake-kebab` | `camel-snake-kebab.core` | `csk`  | `csk/->SCREAMING_SNAKE_CASE` |
+
 
 ### Reader Macros
 

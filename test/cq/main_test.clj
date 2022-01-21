@@ -34,4 +34,4 @@
 
     (testing "#f"
       (is (= {2 :b, 3 :c}
-             (run-main "a: {b: 2, c: 3}" ":a (map-kv #f [%2 %1])"))))))
+             (run-main "a: {b: 2, c: 3}" ":a (m/map-kv #f [%2 %1])"))))))

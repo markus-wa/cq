@@ -40,10 +40,10 @@ cq aims to:
 - Coloured output / syntax highlig for EDN output
 - No startup lag thanks to GraalVM native-images
 - Comes batteries-included with the following libraries for transforming nested data structures and utilities
-  - [specter](https://github.com/redplanetlabs/specter) (`(s/...)`)
-  - [medley](https://github.com/weavejester/medley) (`(m/...)`)
-  - [camel-snake-kebab](https://clj-commons.org/camel-snake-kebab/) (`(csk/...)`)
-  - [xml-in](https://github.com/tolitius/xml-in) (`(xml/...)`)
+  - [specter](https://github.com/redplanetlabs/specter) - `(s/...)`
+  - [medley](https://github.com/weavejester/medley) - `(m/...)`
+  - [camel-snake-kebab](https://clj-commons.org/camel-snake-kebab/) - `(csk/...)`
+  - [xml-in](https://github.com/tolitius/xml-in) - `(xml/...)`
 
 ## Installation
 

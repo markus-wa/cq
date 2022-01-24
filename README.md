@@ -173,7 +173,7 @@ E.g. this is pretty fast
 
 ## TODO
 
-- maybe [XML](https://github.com/tolitius/xml-in), [HTML](https://github.com/davidsantiago/hickory) & Parquet support
+- maybe [HTML](https://github.com/davidsantiago/hickory) & Parquet support
 
 ## Acknowledgements
 

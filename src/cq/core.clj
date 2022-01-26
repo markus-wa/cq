@@ -15,20 +15,34 @@
          (var-get (or (publics k*) v))))
      publics)))
 
-(def medley-bindings
-  (->> (the-ns 'medley.core)
+(defn ns-publics-vars
+  [ns]
+  (->> (the-ns ns)
        ns-publics
        (m/map-vals var-get)))
 
-(def csk-bindings
-  (->> (the-ns 'camel-snake-kebab.core)
-       ns-publics
-       (m/map-vals var-get)))
+(def sci-ns-specs
+  {'xml-in.core
+   {:alias 'xml}
+   'camel-snake-kebab.core
+   {:alias 'csk}
+   'medley.core
+   {:alias 'm}
+   'com.rpl.specter
+   {:alias 's
+    :bindings-override specter-bindings}})
 
-(def xml-in-bindings
-  (->> (the-ns 'xml-in.core)
-       ns-publics
-       (m/map-vals var-get)))
+(defn ns-spec->sci-ns
+  [ns spec]
+  (if-let [bindings (:bindings-override spec)]
+    [ns bindings]
+    [ns (ns-publics-vars ns)]))
+
+(def sci-namespaces
+  (m/map-kv ns-spec->sci-ns sci-ns-specs))
+
+(def sci-ns-aliases
+  (m/map-kv (fn [k v] [(:alias v) k]) sci-ns-specs))
 
 (defn- eval*
   [form opts]
@@ -37,14 +51,11 @@
 (defn- eval-with-data
   [->form data]
   (let [data-var `x#
-        bindings {'eval-with-data eval-with-data
-                  data-var        data}
-        opts {:bindings bindings
-              :namespaces
-              {'xml xml-in-bindings
-               'csk csk-bindings
-               'm medley-bindings
-               's specter-bindings}}]
+        opts {:bindings
+              {'eval-with-data eval-with-data
+               data-var        data}
+              :namespaces sci-namespaces
+              :aliases sci-ns-aliases}]
     (eval* (->form data-var) opts)))
 
 (defn- ->thread-fn

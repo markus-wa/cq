@@ -6,7 +6,7 @@
   org.clojure/data.json {:mvn/version "1.1.0"}
   org.clojure/tools.cli {:mvn/version "1.0.206"}
   org.clojure/tools.reader {:mvn/version "1.3.4"}
-  borkdude/sci {:mvn/version "0.2.4"}
+  org.babashka/sci {:mvn/version "0.3.2"}
   camel-snake-kebab/camel-snake-kebab {:mvn/version "0.4.2"}
   clj-commons/clj-yaml {:mvn/version "0.7.106"}
   clojure-msgpack/clojure-msgpack {:mvn/version "1.2.1"}

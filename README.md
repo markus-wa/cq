@@ -12,6 +12,20 @@ The joy of Clojure's threading macros, but on the command line!
 
 ![image](https://user-images.githubusercontent.com/5138316/132836292-e4c9e2fc-aa59-4431-a869-e2f7930ae1fd.png)
 
+## Installation
+
+### Homebrew
+
+    brew install markus-wa/brew/cq
+
+### Manual
+
+1. Download the latest version for your OS from the [releases](https://github.com/markus-wa/cq/releases) page.
+    - note: you should avoid `cq-jvm` if possible as these are not GraalVM native images and will be slow to start.
+2. Rename binary to `cq`
+3. `chmod +x cq`
+4. Move into a location on `$PATH`
+
 ## Rationale
 
 While there are a few similar tools out there (such as jq, jet or babashka), cq tries to resolve some of their shortcomings such as having to learn custom query languages, lacking powerful data transformation libraries or quick and _easy_ (yes I said the e word) handling of many input and output formats.
@@ -44,14 +58,6 @@ cq aims to:
   - [medley](https://github.com/weavejester/medley) - `(m/...)`
   - [camel-snake-kebab](https://clj-commons.org/camel-snake-kebab/) - `(csk/...)`
   - [xml-in](https://github.com/tolitius/xml-in) - `(xml/...)`
-
-## Installation
-
-1. Download the latest version for your OS from the [releases](https://github.com/markus-wa/cq/releases) page.
-    - note: you should avoid `cq-jvm` if possible as these are not GraalVM native images and will be slow to start.
-2. Rename binary to `cq`
-3. `chmod +x cq`
-4. Move into a location on `$PATH`
 
 ## Usage
 

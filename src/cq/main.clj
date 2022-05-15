@@ -27,7 +27,7 @@
    ["-k" "--key-fn FN" "Function used to transform keys - currently only supported for JSON and CSV"
     :default "keyword"]
    [nil "--yaml-unsafe" "Enables unsafe mode in clj-yaml / SnakeYAML"]
-   [nil "--[no]-yaml-keywords" "Turn map keys into keywords in clj-yaml - default is true"
+   [nil "--[no-]yaml-keywords" "Turn map keys into keywords in clj-yaml - default is true"
     :default true]
    [nil "--yaml-max-aliases-for-collections" "Sets max aliases for collections in clj-yaml / SnakeYAML"]
    [nil "--yaml-allow-recursive-keys" "Allows recursive keys in clj-yaml / SnakeYAML"]

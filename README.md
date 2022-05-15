@@ -78,7 +78,7 @@ Options:
   -p, --[no-]pretty                                Pretty print output - default is true
   -k, --key-fn FN                         keyword  Function used to transform keys - currently only supported for JSON and CSV
       --yaml-unsafe                                Enables unsafe mode in clj-yaml / SnakeYAML
-      --[no]-yaml-keywords                         Turn map keys into keywords in clj-yaml - default is true
+      --[no-]yaml-keywords                         Turn map keys into keywords in clj-yaml - default is true
       --yaml-max-aliases-for-collections           Sets max aliases for collections in clj-yaml / SnakeYAML
       --yaml-allow-recursive-keys                  Allows recursive keys in clj-yaml / SnakeYAML
       --yaml-allow-duplicate-keys                  Allows duplicate keys in clj-yaml / SnakeYAML

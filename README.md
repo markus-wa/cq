@@ -175,7 +175,7 @@ Pretty printing can be pretty slow with the JSON and EDN libraries we use. one t
 
 E.g. this is pretty fast
 
-    ca data.yaml | cq -o json --no-pretty | jq
+    cat data.yaml | cq -o json --no-pretty | jq
 
 ## TODO
 

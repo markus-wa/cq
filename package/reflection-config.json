@@ -1,0 +1,22 @@
+[
+ {
+  "name":"org.msgpack.template.CollectionTemplate",
+  "methods":[{"name":"<init>","parameterTypes":["org.msgpack.template.Template"] }]
+  },
+ {
+  "name":"org.msgpack.template.ListTemplate",
+  "methods":[{"name":"<init>","parameterTypes":["org.msgpack.template.Template"] }]
+  },
+ {
+  "name":"org.msgpack.template.MapTemplate",
+  "methods":[{"name":"<init>","parameterTypes":["org.msgpack.template.Template","org.msgpack.template.Template"] }]
+  },
+ {
+  "name":"org.msgpack.template.SetTemplate",
+  "methods":[{"name":"<init>","parameterTypes":["org.msgpack.template.Template"] }]
+  },
+ {
+  "name":"org.msgpack.template.builder.JavassistTemplateBuilder",
+  "methods":[{"name":"<init>","parameterTypes":["org.msgpack.template.TemplateRegistry","java.lang.ClassLoader"] }]
+  }
+ ]

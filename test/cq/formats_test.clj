@@ -60,7 +60,25 @@
     (is (= {:a {:b [1 2 3]}} (test-reader-str sut/->edn-reader nil "{:a {:b [1 2 3]}}"))))
 
   (testing "writer"
-    (is (= "{:a {:b [1 2 3]}}\n" (test-writer-str sut/->edn-writer nil {:a {:b [1 2 3]}})))))
+    (is (= "{:a {:b [1 2 3]}}\n" (test-writer-str sut/->edn-writer nil {:a {:b [1 2 3]}})))
+
+    (testing "pretty"
+      (is (= "{:a {:b [1 2 3],\n     :c [2 3 {:something :long}],\n     :d [1 2 {:something :even/longer}]}}\n"
+             (test-writer-str sut/->edn-writer {:pretty true :color false} {:a {:b [1 2 3] :c [2 3 {:something :long}] :d [1 2 {:something :even/longer}]}})))
+
+      (testing "color"
+        (is (= "\u001B[1;31m{\u001B[0m\u001B[1;33m:a\u001B[0m \u001B[1;31m{\u001B[0m\u001B[1;33m:b\u001B[0m \u001B[1;31m[\u001B[0m\u001B[36m1\u001B[0m \u001B[36m2\u001B[0m \u001B[36m3\u001B[0m\u001B[1;31m]\u001B[0m,\n     \u001B[1;33m:c\u001B[0m \u001B[1;31m[\u001B[0m\u001B[36m2\u001B[0m \u001B[36m3\u001B[0m \u001B[1;31m{\u001B[0m\u001B[1;33m:something\u001B[0m \u001B[1;33m:long\u001B[0m\u001B[1;31m}\u001B[0m\u001B[1;31m]\u001B[0m,\n     \u001B[1;33m:d\u001B[0m \u001B[1;31m[\u001B[0m\u001B[36m1\u001B[0m \u001B[36m2\u001B[0m \u001B[1;31m{\u001B[0m\u001B[1;33m:something\u001B[0m \u001B[1;33m:even/longer\u001B[0m\u001B[1;31m}\u001B[0m\u001B[1;31m]\u001B[0m\u001B[1;31m}\u001B[0m\u001B[1;31m}\u001B[0m\n"
+               (test-writer-str sut/->edn-writer {:pretty true :color true} {:a {:b [1 2 3] :c [2 3 {:something :long}] :d [1 2 {:something :even/longer}]}})))))))
+
+(comment
+  ;; simple utility for printing an ANSI escaped sequence for a test constant
+  ;; ANSI uses the ESC character for escape codes and it is lost in printing
+  (let [x {:a {:b [1 2 3] :c [2 3 {:something :long}] :d [1 2 {:something :even/longer}]}}
+        s (test-writer-str sut/->edn-writer {:pretty true :color true} x)]
+    (str/join (for [c s]
+                (if (= 27 (int c))
+                  "ESC" ; replace with \u001B and you get a test constant
+                  c)))))
 
 (defn resource->bytes [file]
   (with-open [xin (io/input-stream (io/resource file))

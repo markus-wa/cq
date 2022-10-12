@@ -76,6 +76,9 @@ Options:
   -i, --in FORMAT                         yaml     Input format: csv, edn, json, lines, msgpack, text, transit, yaml
   -o, --out FORMAT                        edn      Output format: csv, edn, json, lines, msgpack, text, transit, yaml
   -p, --[no-]pretty                                Pretty print output - default is true
+      --color COLOR                       auto     When pretty printing, whether to use colors: auto, off, on - default is auto
+  -c                                               Same as --color=on
+  -C                                               Same as --color=off
   -k, --key-fn FN                         keyword  Function used to transform keys - currently only supported for JSON and CSV
       --yaml-unsafe                                Enables unsafe mode in clj-yaml / SnakeYAML
       --[no-]yaml-keywords                         Turn map keys into keywords in clj-yaml - default is true

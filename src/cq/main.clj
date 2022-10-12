@@ -7,6 +7,10 @@
 
 (require 'cq.readers)
 
+(def colors #{:auto :on :off})
+
+(def colors-str (str/join ", " (sort (map name colors))))
+
 (def formats (set (keys fmt/formats)))
 
 (def formats-str (str/join ", " (sort formats)))
@@ -24,6 +28,16 @@
     :validate [formats]]
    ["-p" "--[no-]pretty" "Pretty print output - default is true"
     :default true]
+   [nil "--color COLOR" (str "When pretty printing, whether to use colors: " colors-str " - default is auto")
+    :default "auto"
+    :parse-fn keyword
+    :validate [colors]]
+   ["-c" nil "Same as --color=on"
+    :id :color
+    :assoc-fn (fn [m _ _] (assoc m :color :on))]
+   ["-C" nil "Same as --color=off"
+    :id :color
+    :assoc-fn (fn [m _ _] (assoc m :color :off))]
    ["-k" "--key-fn FN" "Function used to transform keys - currently only supported for JSON and CSV"
     :default "keyword"]
    [nil "--yaml-unsafe" "Enables unsafe mode in clj-yaml / SnakeYAML"]
@@ -96,11 +110,18 @@
 (def ^:dynamic *stdin* System/in)
 (def ^:dynamic *stdout* System/out)
 
+(defn- handle-auto-options [opts]
+  (update opts :color #(case %
+                         :auto true ; would be nice to detect
+                         :on true
+                         false)))
+
 (defn main
   [args]
   (let [{:keys [arguments exit-message ok?]
          {:keys [in out] :as opts} :options}
-        (validate-args args)]
+        (validate-args args)
+        opts (handle-auto-options opts)]
     (if exit-message
       (exit (if ok? 0 1) exit-message)
       (let [expressions (args->exprs arguments)

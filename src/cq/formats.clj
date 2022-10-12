@@ -35,11 +35,13 @@
     (edn/read (PushbackReader. (io/reader in)))))
 
 (defn ->edn-writer
-  [{:keys [pretty]}]
+  [{:keys [pretty color]}]
   (if pretty
     (fn [x out]
       (binding [*out* (io/writer out)]
-        (puget/cprint x)))
+        (if color
+          (puget/cprint x)
+          (puget/pprint x))))
     (fn [x out]
       (binding [*out* (io/writer out)]
         (pr x)

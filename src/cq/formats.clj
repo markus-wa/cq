@@ -74,8 +74,7 @@
 
 (defn ->text-reader
   [_]
-  (fn [in]
-    (slurp in)))
+  slurp)
 
 (defn ->text-writer
   [_]

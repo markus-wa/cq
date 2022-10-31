@@ -29,7 +29,7 @@
    ["-p" "--[no-]pretty" "Pretty print output - default is true"
     :default true]
    [nil "--color COLOR" (str "When pretty printing, whether to use colors: " colors-str " - default is auto")
-    :default "auto"
+    :default :auto
     :parse-fn keyword
     :validate [colors]]
    ["-c" nil "Same as --color=on"

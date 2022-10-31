@@ -29,7 +29,7 @@
    ["-p" "--[no-]pretty" "Pretty print output - default is true"
     :default true]
    [nil "--color COLOR" (str "When pretty printing, whether to use colors: " colors-str " - default is auto")
-    :default "auto"
+    :default :auto
     :parse-fn keyword
     :validate [colors]]
    ["-c" nil "Same as --color=on"
@@ -110,9 +110,20 @@
 (def ^:dynamic *stdin* System/in)
 (def ^:dynamic *stdout* System/out)
 
+(defn- autodetect-color
+  "Autodetects whether ANSI color should be enabled.
+
+  REPLs in general support colors, but may not use a console.
+
+  JVM gives us the `System/console`, if we have a console,
+  and not a plain pipe."
+  []
+  (or (contains? (set (loaded-libs)) 'nrepl.core)
+      (System/console)))
+
 (defn- handle-auto-options [opts]
   (update opts :color #(case %
-                         :auto true ; would be nice to detect
+                         :auto (autodetect-color)
                          :on true
                          false)))
 

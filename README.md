@@ -10,7 +10,7 @@ The joy of Clojure's threading macros, but on the command line!
 [![License](https://img.shields.io/badge/license-EPL--2.0-blue)](LICENSE)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmarkus-wa%2Fcq.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmarkus-wa%2Fcq?ref=badge_shield)
 
-![image](https://user-images.githubusercontent.com/5138316/132836292-e4c9e2fc-aa59-4431-a869-e2f7930ae1fd.png)
+![image](https://user-images.githubusercontent.com/5138316/214537590-b6c8b30d-9c38-4027-862e-a6ae1c89fb9a.png)
 
 ## Installation
 

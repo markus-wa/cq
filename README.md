@@ -28,7 +28,7 @@ The joy of Clojure's threading macros, but on the command line!
 
 ## Rationale
 
-While there are a few similar, amazing tools out there (such as jq, jet or babashka), cq tries to resolve some of their shortcomings such as having to learn custom query languages, lacking powerful data transformation libraries or quick and _easy_ (yes I said the e word) handling of many input and output formats.
+While there are a few similar, amazing tools out there (such as `jq`, `jet` or `babashka`), `cq` tries to resolve some of their shortcomings such as having to learn custom query languages, lacking powerful data transformation libraries or quick and _easy_ (yes I said the e word) handling of many input and output formats.
 
 cq aims to:
 

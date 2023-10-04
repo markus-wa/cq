@@ -172,13 +172,14 @@
 (defn ->html-reader
   [_]
   (fn [in]
-    (html/as-hickory (org.jsoup.Jsoup/parse in nil ""))))
+    (html/as-hickory (html/parse (slurp (io/reader in))))))
 
 (defn ->html-writer
   [_]
   (fn [x out]
-    (with-open [w (io/writer out)]
-      (.write w (hickory-to-html x)))))
+    (binding [*out* (io/writer out)]
+      (print (hickory-to-html x))
+      (flush))))
 
 (def formats
   {"json"    {:->reader ->json-reader

@@ -2,7 +2,8 @@
   (:require [cq.formats :as sut]
             [clojure.test :refer :all]
             [clojure.java.io :as io]
-            [clojure.string :as str])
+            [clojure.string :as str]
+            [hickory.core :as html])
   (:import [java.io ByteArrayInputStream BufferedInputStream PrintStream ByteArrayOutputStream]))
 
 (defn- to-out-stream
@@ -152,3 +153,33 @@
   <a:article>Hello</a:article>
 </a:html>\n"
              (test-writer-str sut/->xml-writer {:pretty true} test-xml-data))))))
+
+(def test-html-str
+  "<p>hello</p>")
+
+(def test-html-data
+  {:type :document
+   :content
+   [{:type  :element
+     :attrs nil
+     :tag   :html
+     :content
+     [{:type  :element
+       :attrs nil
+       :tag   :head :content nil}
+      {:type  :element
+       :attrs nil
+       :tag   :body :content
+       [{:type    :element
+         :attrs   nil
+         :tag     :p
+         :content ["hello"]}]}]}]})
+
+(deftest html
+  (testing "reader"
+    (is (= test-html-data
+           (test-reader-str sut/->html-reader nil test-html-str))))
+
+  (testing "writer"
+    (is (= "<html><head></head><body><p>hello</p></body></html>"
+           (test-writer-str sut/->html-writer nil test-html-data)))))

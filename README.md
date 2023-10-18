@@ -49,6 +49,7 @@ cq aims to:
   - CSV
   - Cognitec's Transit format
   - Text (raw and line-separated)
+  - HTML (via Hickory)
 - [Various reader macros](#reader-macros) that make writing queries easier
 - [Threading macro redirection](#threading-macro-redirection) reduces need for parentheses
 - Coloured output / syntax highlig for EDN output
@@ -73,8 +74,8 @@ Examples
   printf 'http://example.com/some/path' | cq -i text -- '-> str/upper-case (str/split #"/") ->> (map str/reverse)'
 
 Options:
-  -i, --in FORMAT                         yaml     Input format: csv, edn, json, lines, msgpack, text, transit, yaml
-  -o, --out FORMAT                        edn      Output format: csv, edn, json, lines, msgpack, text, transit, yaml
+  -i, --in FORMAT                         yaml     Input format: csv, edn, json, lines, msgpack, text, transit, yaml, html
+  -o, --out FORMAT                        edn      Output format: csv, edn, json, lines, msgpack, text, transit, yaml, html
   -p, --[no-]pretty                                Pretty print output - default is true
       --color COLOR                       auto     When pretty printing, whether to use colors: auto, off, on - default is auto
   -c                                               Same as --color=on
@@ -182,7 +183,7 @@ E.g. this is pretty fast
 
 ## TODO
 
-- maybe [HTML](https://github.com/davidsantiago/hickory) & Parquet support
+- maybe Parquet support
 
 ## Acknowledgements
 

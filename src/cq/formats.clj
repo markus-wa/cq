@@ -2,6 +2,8 @@
   (:require [clojure.data.csv :as csv]
             [clojure.data.json :as json]
             [clojure.data.xml :as xml]
+            [hickory.core :as html]
+            [hickory.render :refer [hickory-to-html]]
             [clojure.edn :as edn]
             [clojure.pprint :as ppt]
             [clojure.java.io :as io]
@@ -167,6 +169,18 @@
       (with-open [w (io/writer out)]
         (emit x w)))))
 
+(defn ->html-reader
+  [_]
+  (fn [in]
+    (html/as-hickory (html/parse (slurp (io/reader in))))))
+
+(defn ->html-writer
+  [_]
+  (fn [x out]
+    (binding [*out* (io/writer out)]
+      (print (hickory-to-html x))
+      (flush))))
+
 (def formats
   {"json"    {:->reader ->json-reader
               :->writer ->json-writer}
@@ -185,7 +199,9 @@
    "transit" {:->reader ->transit-reader
               :->writer ->transit-writer}
    "xml"     {:->reader ->xml-reader
-              :->writer ->xml-writer}})
+              :->writer ->xml-writer}
+   "html"    {:->reader ->html-reader
+              :->writer ->html-writer}})
 
 (defn format->reader
   [format in opts]

@@ -6,6 +6,7 @@
 (require 'com.rpl.specter)
 (require 'camel-snake-kebab.core)
 (require 'xml-in.core)
+(require 'clojure.instant)
 
 (def specter-bindings
   (let [publics (ns-publics (the-ns 'com.rpl.specter))]
@@ -30,7 +31,9 @@
    {:alias 'm}
    'com.rpl.specter
    {:alias 's
-    :bindings-override specter-bindings}})
+    :bindings-override specter-bindings}
+   'clojure.instant
+   {:alias 'inst}})
 
 (defn ns-spec->sci-ns
   [ns spec]

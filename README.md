@@ -101,6 +101,13 @@ $ echo '{"a": {"b": [1, 2, 3]}}' | cq ':a :b (map inc)'
 (2 3 4)
 ```
 
+You can use `clojure.instant` (alias `inst`) to parse timestamps.
+
+```bash
+$ echo '{"a": "2023-03-11T03:01:11.000Z"}' | cq :a inst/read-instant-timestamp
+#inst "2023-03-11T03:01:11.000-00:00"
+```
+
 Using `#|` you can use the current value as `.`.
 
 ```bash
@@ -157,6 +164,7 @@ Currently supported threading operators for redirection:
 | `medley` | `medley.core` | `m` | `(m/mak-kv (fn [k v] [v k]))` |
 | `com.rpl/specter` | `com.rpl.specter` | `s` | `(s/transform [MAP-VALS MAP-VALS] inc)` |
 | `camel-snake-kebab` | `camel-snake-kebab.core` | `csk`  | `csk/->SCREAMING_SNAKE_CASE` |
+| `clojure.instant` | `clojure.instant` | `inst`  | `inst/read-instant-timestamp` |
 
 
 ### Reader Macros

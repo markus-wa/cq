@@ -34,7 +34,7 @@
 (defn ->edn-reader
   [_]
   (fn [in]
-    (edn/read (PushbackReader. (io/reader in)))))
+    (edn/read {:default tagged-literal} (PushbackReader. (io/reader in)))))
 
 (defn ->edn-writer
   [{:keys [pretty color]}]

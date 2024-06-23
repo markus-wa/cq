@@ -7,6 +7,9 @@
 (require 'camel-snake-kebab.core)
 (require 'xml-in.core)
 (require 'clojure.instant)
+(require 'clojure.data.csv)
+(require 'clojure.data.json)
+(require 'clojure.data.xml)
 
 (def specter-bindings
   (let [publics (ns-publics (the-ns 'com.rpl.specter))]
@@ -24,7 +27,7 @@
 
 (def sci-ns-specs
   {'xml-in.core
-   {:alias 'xml}
+   {:alias 'xml-in}
    'camel-snake-kebab.core
    {:alias 'csk}
    'medley.core
@@ -32,6 +35,12 @@
    'com.rpl.specter
    {:alias 's
     :bindings-override specter-bindings}
+   'clojure.data.csv
+   {:alias 'csv}
+   'clojure.data.json
+   {:alias 'json}
+   'clojure.data.xml
+   {:alias 'xml}
    'clojure.instant
    {:alias 'inst}})
 

@@ -160,11 +160,14 @@ Currently supported threading operators for redirection:
 
 | Library | Namespace | Alias | Example Query |
 | ------- | --------- | ----- | ------- |
-| `tolitius/xml-in` | `xml-in.core` | `xml` | `#\| (xml/find-all . [:universe :system :solar :planet])` |
+| `tolitius/xml-in` | `xml-in.core` | `xml-in` | `#\| (xml-in/find-all . [:universe :system :solar :planet])` |
 | `medley` | `medley.core` | `m` | `(m/mak-kv (fn [k v] [v k]))` |
 | `com.rpl/specter` | `com.rpl.specter` | `s` | `(s/transform [MAP-VALS MAP-VALS] inc)` |
 | `camel-snake-kebab` | `camel-snake-kebab.core` | `csk`  | `csk/->SCREAMING_SNAKE_CASE` |
 | `clojure.instant` | `clojure.instant` | `inst`  | `inst/read-instant-timestamp` |
+| `clojure.data.csv` | `clojure.data.csv` | `csv`  | `csv/read-csv` |
+| `clojure.data.json` | `clojure.data.json` | `json`  | `json/read-str` |
+| `clojure.data.xml` | `clojure.data.xml` | `xml`  | `xml/parse-str` |
 
 
 ### Reader Macros

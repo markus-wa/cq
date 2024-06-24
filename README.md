@@ -58,7 +58,10 @@ cq aims to:
   - [specter](https://github.com/redplanetlabs/specter) - `(s/...)`
   - [medley](https://github.com/weavejester/medley) - `(m/...)`
   - [camel-snake-kebab](https://clj-commons.org/camel-snake-kebab/) - `(csk/...)`
-  - [xml-in](https://github.com/tolitius/xml-in) - `(xml/...)`
+  - [xml-in](https://github.com/tolitius/xml-in) - `(xml-in/...)`
+  - [data.json](https://github.com/clojure/data.json) - `(json/...)`
+  - [data.csv](https://github.com/clojure/data.csv) - `(csv/...)`
+  - [data.xml](https://github.com/clojure/data.xml) - `(xml/...)`
 
 ## Usage
 

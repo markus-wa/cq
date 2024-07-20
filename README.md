@@ -17,7 +17,9 @@ The joy of Clojure's threading macros, but on the command line!
 ### Homebrew
 
     brew install markus-wa/brew/cq
-
+### Windows / Scoop
+    scoop bucket add scoop-clojure
+    scoop install scoop-clojure/cq
 ### Manual
 
 1. Download the latest version for your OS from the [releases](https://github.com/markus-wa/cq/releases) page.

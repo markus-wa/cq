@@ -4,7 +4,7 @@ Command-line Data Processor for EDN, YAML, JSON, XML and other data formats.
 
 The joy of Clojure's threading macros, but on the command line!
 
-May or may not have invented the Hash-Pipe (`#|`) operator 🍁 (citation needed)
+May or may not have invented the Hash-Pipe `#|` operator 🍁 (citation needed)
 
 [![CI / CD](https://github.com/markus-wa/cq/actions/workflows/cicd.yaml/badge.svg)](https://github.com/markus-wa/cq/actions/workflows/cicd.yaml)
 [![codecov](https://codecov.io/gh/markus-wa/cq/branch/main/graph/badge.svg?token=zGovO2H0bm)](https://codecov.io/gh/markus-wa/cq)

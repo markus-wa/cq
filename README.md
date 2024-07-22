@@ -4,6 +4,8 @@ Command-line Data Processor for EDN, YAML, JSON, XML and other data formats.
 
 The joy of Clojure's threading macros, but on the command line!
 
+May or may not have invented the Hash-Pipe (`#|`) operator 🍁 (citation needed)
+
 [![CI / CD](https://github.com/markus-wa/cq/actions/workflows/cicd.yaml/badge.svg)](https://github.com/markus-wa/cq/actions/workflows/cicd.yaml)
 [![codecov](https://codecov.io/gh/markus-wa/cq/branch/main/graph/badge.svg?token=zGovO2H0bm)](https://codecov.io/gh/markus-wa/cq)
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/markus-wa/cq)](https://github.com/markus-wa/cq/releases)
@@ -182,9 +184,9 @@ This table explains the different reader macros provided by `cq`.
 
 | Reader Macro | Description | Interpolates to | Example |
 | ------------ | ----------- | --------------- | ------- |
-| `#\| <f>`  | Use the current value as `.` | `((fn [.] <f>))` | `#\| (< 5 . 10)` |
+| `#\| <f>` | Hash-Pipe 🍁: Use the current value as `.` | `((fn [.] <f>))` | `#\| (< 5 . 10)` |
 | `#map <f>` | Map elements of a seq | `(map (fn [.] <f>))` | `#map {:a (:a .) :first-child (-> . :children first)}` |
-| `#& (<d> <f...>)` | Destructure into vars | `((fn [.] (let [<d> .] <f>)` | `#& ({:keys [a b c]} [a b c]})` |
+| `#& (<d> <f...>)` | Destructor: Destructure into vars | `((fn [.] (let [<d> .] <f>)` | `#& ({:keys [a b c]} [a b c]})` |
 | `#f <f>` | Anonymous function, returns value of f, not evaluation of f | `#(do <f>)` | `(map-kv #f [%2 %1])` |
 
 ### Tips & Tricks

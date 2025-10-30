@@ -55,7 +55,7 @@ cq aims to:
   - Text (raw and line-separated)
   - HTML (via Hickory)
 - [Various reader macros](#reader-macros) that make writing queries easier
-- [Threading macro redirection](#threading-macro-redirection) reduces need for parentheses
+- [Threading Macro Redirection](#threading-macro-redirection) reduces need for parentheses
 - Coloured output / syntax highlig for EDN output
 - No startup lag thanks to GraalVM native-images
 - Comes batteries-included with the following libraries for transforming nested data structures and utilities
@@ -106,6 +106,12 @@ By default `cq` uses [thread last (`->>`)](https://clojure.org/guides/threading_
 ```bash
 $ echo '{"a": {"b": [1, 2, 3]}}' | cq ':a :b (map inc)'
 (2 3 4)
+```
+
+You can change this by using [Threading Macro Redirection](#threading-macro-redirection)
+
+```bash
+$ echo '{"a": {"b": [3, 4, 5]}}' | cq ':a :b -> (conj 2) ->> (map dec)'
 ```
 
 You can use `clojure.instant` (alias `inst`) to parse timestamps.

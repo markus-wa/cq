@@ -5,6 +5,7 @@
             [hickory.core :as html]
             [hickory.render :refer [hickory-to-html]]
             [clojure.edn :as edn]
+            [clojure.string :as str]
             [clojure.pprint :as ppt]
             [clojure.java.io :as io]
             [msgpack.core :as mp]
@@ -30,6 +31,23 @@
       (binding [*out* (io/writer out)]
         (json/write x *out*)
         (println)))))
+
+(defn ->json-ld-reader
+  [{:keys [key-fn]
+    :or   {key-fn keyword}}]
+  (fn [in]
+    (with-open [r (io/reader in)]
+      (doall (map #(json/read-str % :key-fn key-fn)
+                  (remove str/blank? (line-seq r)))))))
+
+(defn ->json-ld-writer
+  [_]
+  (fn [data out]
+    (with-open [w (io/writer out)]
+      (doseq [item (if (sequential? data) data [data])]
+        (json/write item w)
+        (.write w "\n"))
+      (.flush w))))
 
 (defn ->edn-reader
   [_]
@@ -184,6 +202,8 @@
 (def formats
   {"json"    {:->reader ->json-reader
               :->writer ->json-writer}
+   "json-ld" {:->reader ->json-ld-reader
+              :->writer ->json-ld-writer}
    "edn"     {:->reader ->edn-reader
               :->writer ->edn-writer}
    "msgpack" {:->reader ->msgpack-reader

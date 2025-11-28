@@ -116,7 +116,7 @@ jobs:
         uses: DeLaGuardo/setup-graalvm@5.0
         with:
           graalvm: '25.0.1'
-          java: java11
+          java: java25
           arch: amd64
 
       - name: Install native-image Component

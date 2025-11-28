@@ -113,11 +113,11 @@ jobs:
           path: target
 
       - name: Setup GraalVM
-        uses: DeLaGuardo/setup-graalvm@5.0
+        uses: graalvm/setup-graalvm@v1
         with:
-          graalvm: '25.0.1'
-          java: java25
-          arch: amd64
+          java-version: '25'
+          distribution: 'graalvm-community'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install native-image Component
         run: |

@@ -56,6 +56,16 @@
     (testing "pretty"
       (is (= "{\"a\":{\"b\":[1, 2, 3]}}\n" (test-writer-str sut/->json-writer {:pretty true} {:a {:b [1 2 3]}}))))))
 
+(deftest json-ld
+  (testing "reader"
+    (is (= '({:a {:b [1 2 3]}}) (test-reader-str sut/->json-ld-reader nil "{\"a\": {\"b\": [1, 2, 3]}}"))))
+
+  (testing "writer"
+    (is (= "{\"a\":{\"b\":[1,2,3]}}\n" (test-writer-str sut/->json-ld-writer nil {:a {:b [1 2 3]}})))
+
+    (testing "pretty"
+      (is (= "{\"a\":{\"b\":[1,2,3]}}\n" (test-writer-str sut/->json-ld-writer {:pretty true} {:a {:b [1 2 3]}}))))))
+
 (deftest edn
   (testing "reader"
     (is (= {:a {:b [1 2 3]}} (test-reader-str sut/->edn-reader nil "{:a {:b [1 2 3]}}"))))

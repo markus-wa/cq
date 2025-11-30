@@ -91,14 +91,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        gu-binary: [gu, gu.cmd]
-        exclude:
-          - os: ubuntu-latest
-            gu-binary: gu.cmd
-          - os: macos-latest
-            gu-binary: gu.cmd
-          - os: windows-latest
-            gu-binary: gu
 
     runs-on: ${{ matrix.os }}
 
@@ -118,10 +110,6 @@ jobs:
           java-version: '25'
           distribution: 'graalvm-community'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install native-image Component
-        run: |
-          ${{ matrix.gu-binary }} install native-image
 
       - name: Install MSVC Toolset (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
@@ -151,7 +139,7 @@ jobs:
       - name: Upload Native Image Artifact
         uses: actions/upload-artifact@v5
         with:
-          name: cq-all
+          name: cq-native-${{ matrix.os }}
           path: target/cq*
 
   release:
@@ -163,10 +151,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Download Artifacts
+      - name: Download Linux Artifacts
         uses: actions/download-artifact@v6
         with:
-          name: cq-all
+          name: cq-native-ubuntu-latest
+          path: target
+
+      - name: Download macOS Artifacts
+        uses: actions/download-artifact@v6
+        with:
+          name: cq-native-macos-latest
+          path: target
+
+      - name: Download Windows Artifacts
+        uses: actions/download-artifact@v6
+        with:
+          name: cq-native-windows-latest
+          path: target
+
+      - name: Download JVM Artifacts
+        uses: actions/download-artifact@v6
+        with:
+          name: cq-jvm
           path: target
 
       - name: Rename cq-jvm to -SLOW

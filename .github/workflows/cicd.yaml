@@ -164,6 +164,7 @@ jobs:
         with:
           pattern: cq-*
           path: target
+          merge-multiple: true
 
       - name: Rename cq-jvm to -SLOW
         shell: bash

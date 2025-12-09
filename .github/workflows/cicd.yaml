@@ -140,7 +140,7 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: cq-native-${{ matrix.os }}
-          path: target/cq*
+          path: target/cq-native-*
 
   release:
     if: startsWith(github.ref, 'refs/tags/')
@@ -151,28 +151,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Download Linux Artifacts
+      - name: Download Artifacts
         uses: actions/download-artifact@v6
         with:
-          name: cq-native-ubuntu-latest
-          path: target
-
-      - name: Download macOS Artifacts
-        uses: actions/download-artifact@v6
-        with:
-          name: cq-native-macos-latest
-          path: target
-
-      - name: Download Windows Artifacts
-        uses: actions/download-artifact@v6
-        with:
-          name: cq-native-windows-latest
-          path: target
-
-      - name: Download JVM Artifacts
-        uses: actions/download-artifact@v6
-        with:
-          name: cq-jvm
+          pattern: cq-*
           path: target
 
       - name: Rename cq-jvm to -SLOW

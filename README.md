@@ -47,7 +47,7 @@ cq aims to:
 - Data Formats:
   - EDN
   - YAML
-  - JSON (optional: [line-delimited](https://jsonlines.org/))
+  - JSON (regular + [line-delimited](https://jsonlines.org/))
   - XML
   - MsgPack
   - CSV

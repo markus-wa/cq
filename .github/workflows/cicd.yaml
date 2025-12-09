@@ -159,22 +159,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Download Ubuntu Artifacts
+      - name: Download Artifacts
         uses: actions/download-artifact@v6
         with:
-          name: cq-ubuntu-latest
-          path: target
-
-      - name: Download MacOS Artifacts
-        uses: actions/download-artifact@v6
-        with:
-          name: cq-macos-latest
-          path: target
-
-      - name: Download Windows Artifacts
-        uses: actions/download-artifact@v6
-        with:
-          name: cq-windows-latest
+          pattern: cq-*
           path: target
 
       - name: Rename cq-jvm to -SLOW

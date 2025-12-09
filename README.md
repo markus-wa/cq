@@ -47,7 +47,7 @@ cq aims to:
 - Data Formats:
   - EDN
   - YAML
-  - JSON
+  - JSON (regular + [line-delimited](https://jsonlines.org/))
   - XML
   - MsgPack
   - CSV
@@ -81,8 +81,8 @@ Examples
   printf 'http://example.com/some/path' | cq -i text -- '-> str/upper-case (str/split #"/") ->> (map str/reverse)'
 
 Options:
-  -i, --in FORMAT                         yaml     Input format: csv, edn, json, lines, msgpack, text, transit, yaml, html
-  -o, --out FORMAT                        edn      Output format: csv, edn, json, lines, msgpack, text, transit, yaml, html
+  -i, --in FORMAT                         yaml     Input format: csv, edn, json, json-ld, lines, msgpack, text, transit, yaml, html
+  -o, --out FORMAT                        edn      Output format: csv, edn, json, json-ld, lines, msgpack, text, transit, yaml, html
   -p, --[no-]pretty                                Pretty print output - default is true
       --color COLOR                       auto     When pretty printing, whether to use colors: auto, off, on - default is auto
   -c                                               Same as --color=on

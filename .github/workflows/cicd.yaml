@@ -147,7 +147,7 @@ jobs:
       - name: Upload Native Image Artifact
         uses: actions/upload-artifact@v5
         with:
-          name: cq-all
+          name: cq-${{ matrix.os }}
           path: target/cq-native-*
 
   release:
@@ -159,10 +159,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Download Artifacts
+      - name: Download Linux Artifacts
         uses: actions/download-artifact@v6
         with:
-          name: cq-all
+          name: cq-linux-latest
+          path: target
+
+      - name: Download MacOS Artifacts
+        uses: actions/download-artifact@v6
+        with:
+          name: cq-macos-latest
+          path: target
+
+      - name: Download Windows Artifacts
+        uses: actions/download-artifact@v6
+        with:
+          name: cq-windows-latest
           path: target
 
       - name: Rename cq-jvm to -SLOW

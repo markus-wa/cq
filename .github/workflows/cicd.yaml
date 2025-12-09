@@ -159,10 +159,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Download Linux Artifacts
+      - name: Download Ubuntu Artifacts
         uses: actions/download-artifact@v6
         with:
-          name: cq-linux-latest
+          name: cq-ubuntu-latest
           path: target
 
       - name: Download MacOS Artifacts
